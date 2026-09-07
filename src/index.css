@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  --color-[#09090b]: #09090b;
+  --color-gem-pink: #ec4899;
+  --color-gem-magenta: #db2777;
+  --color-gem-deepPink: #be185d;
+  --color-gem-lightPink: #fbcfe8;
+  --color-gem-blush: #fce7f3;
+  --color-gem-black: #09090b;
+  --color-gem-dark: #121215;
+  --color-gem-charcoal: #18181b;
+  --color-gem-card: #141419;
+  --color-gem-border: #27272a;
+
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", Inter, sans-serif;
+}
+
+body {
+  background-color: #09090b;
+  color: #f1f5f9;
+  font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+  overflow-x: hidden;
+}
+
+/* The storefront is frequently used on compact Android handsets. Keep all
+   layout primitives inside the viewport, including when a modal is open. */
+html, body, #root {
+  min-width: 0;
+  min-height: 100%;
+}
+
+img, svg {
+  max-width: 100%;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+@media (max-width: 380px) {
+  .mobile-safe-x {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+h1, h2, h3, .font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Custom Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ec4899;
+}
+
+/* Glassmorphism & Luxury Glow Utilities */
+.glass-panel {
+  background: rgba(18, 18, 21, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-nav {
+  background: rgba(9, 9, 11, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.crystal-card {
+  background: linear-gradient(145deg, rgba(24, 24, 27, 0.9), rgba(18, 18, 21, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.crystal-card:hover {
+  border-color: rgba(236, 72, 153, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.25);
+  transform: translateY(-3px);
+}
+
+.pink-glow-text {
+  text-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
+}
+
+.shadow-pink-glow {
+  box-shadow: 0 0 25px -5px rgba(236, 72, 153, 0.4);
+}
+
+.shadow-pink-glow-lg {
+  box-shadow: 0 0 40px -10px rgba(236, 72, 153, 0.6);
+}
+
+.badge-sale {
+  background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+}
+
+/* Product image color-switch fade */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(1.02); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}

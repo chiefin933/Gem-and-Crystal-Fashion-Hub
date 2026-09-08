@@ -33,13 +33,25 @@ class DataService {
         return;
       }
     } catch {
-      console.warn('API unavailable, falling back to local dataset');
+      console.warn('API unavailable — checking demo fallback policy');
     }
 
-    // Fallback to local products
-    this.products = PRODUCTS;
-    this.coupons = INITIAL_COUPONS;
-    this.branches = INITIAL_BRANCHES;
+    // Demo data fallback is ONLY permitted in development.
+    // In production the storefront shows an empty catalog so customers
+    // never see stale/incorrect prices or phantom stock.
+    const demoFallbackEnabled = import.meta.env.VITE_ENABLE_DEMO_FALLBACK === 'true';
+    const isDev = import.meta.env.DEV;
+
+    if (isDev || demoFallbackEnabled) {
+      console.warn('Using local demo dataset (dev/demo-fallback mode)');
+      this.products = PRODUCTS;
+      this.coupons = INITIAL_COUPONS;
+      this.branches = INITIAL_BRANCHES;
+    } else {
+      // Production: leave products empty — UI will show "store unavailable"
+      console.error('API unavailable in production. Demo fallback is disabled. Products will not load.');
+      this.products = [];
+    }
     this.isLoaded = true;
   }
 

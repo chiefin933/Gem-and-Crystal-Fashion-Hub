@@ -8,7 +8,7 @@ interface ChatMessage {
   timestamp: string;
 }
 
-const API_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:4000') + '/api/ai/chat';
+const API_URL = (import.meta.env.VITE_API_URL ?? '') + '/api/ai/chat';
 
 export const BilingualAiChat: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

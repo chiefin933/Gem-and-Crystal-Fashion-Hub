@@ -28,8 +28,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
 
-  // Payment Selection State
-  const [paymentMethod, setPaymentMethod] = useState<'MPESA' | 'CARD'>('MPESA');
+  // Payment Selection State — CARD is disabled until a payment gateway is integrated
+  const [paymentMethod, setPaymentMethod] = useState<'MPESA'>('MPESA');
   const [mpesaPhone, setMpesaPhone] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -252,25 +252,21 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <span className="text-xs font-bold text-emerald-400">Recommended for Kenya</span>
               </div>
 
-              {/* Card Option */}
+              {/* Card Option — disabled until card gateway is integrated */}
               <div
-                onClick={() => setPaymentMethod('CARD')}
-                className={`p-4 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-between ${
-                  paymentMethod === 'CARD'
-                    ? 'bg-gem-pink/15 border-gem-pink shadow-pink-glow'
-                    : 'bg-[#121215] border-gem-border opacity-70 hover:opacity-100'
-                }`}
+                className="p-4 rounded-xl border-2 border-gem-border bg-[#121215] opacity-40 cursor-not-allowed flex flex-col justify-between"
+                title="Card payments are not yet available"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <span className="px-2.5 py-1 bg-slate-800 text-white font-extrabold rounded text-[11px]">
+                  <span className="px-2.5 py-1 bg-slate-800 text-slate-400 font-extrabold rounded text-[11px]">
                     Credit / Debit Card
                   </span>
-                  <CreditCard className="w-5 h-5 text-gem-pink" />
+                  <CreditCard className="w-5 h-5 text-slate-600" />
                 </div>
-                <p className="text-[11px] text-slate-300 font-light mb-3">
-                  Record a card payment preference. No card details are collected on this website.
+                <p className="text-[11px] text-slate-500 font-light mb-3">
+                  Card payments are coming soon. Please use M-PESA for now.
                 </p>
-                <span className="text-xs font-bold text-slate-300">Gateway setup pending</span>
+                <span className="text-xs font-bold text-slate-500">Coming soon</span>
               </div>
 
             </div>

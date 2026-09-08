@@ -2,7 +2,6 @@ import {
   Product,
   ProductVariant,
   Order,
-  InventoryMovement,
   Coupon,
   Branch,
   FilterState,
@@ -11,10 +10,21 @@ import {
 import { PRODUCTS, INITIAL_COUPONS, INITIAL_BRANCHES } from './demoData';
 import { fetchProducts as apiFetchProducts, placeOrder as apiPlaceOrder, validateCoupon as apiValidateCoupon } from '../api/client';
 
+/**
+ * PAYMENT_CAPABILITIES — single source of truth for which payment methods
+ * are currently active. When a gateway is integrated, flip the flag here
+ * and the backend accepts it simultaneously.
+ *
+ * The storefront type still allows 'CARD' so the UI can show it as "coming
+ * soon", but any CARD order attempt is rejected by the backend.
+ */
+export const PAYMENT_CAPABILITIES: Record<'MPESA' | 'CARD', boolean> = {
+  MPESA: true,
+  CARD:  false, // Enable when card gateway is integrated
+};
+
 class DataService {
   private products: Product[] = [];
-  private orders: Order[] = [];
-  private inventoryMovements: InventoryMovement[] = [];
   private coupons: Coupon[] = INITIAL_COUPONS;
   private branches: Branch[] = INITIAL_BRANCHES;
   private isLoaded = false;
@@ -146,23 +156,7 @@ class DataService {
     return this.products.find(p => p.id === id);
   }
 
-  public saveProduct(product: Product): Product {
-    const idx = this.products.findIndex(p => p.id === product.id);
-    if (idx >= 0) this.products[idx] = product;
-    else this.products.unshift(product);
-    return product;
-  }
-
-  public deleteProduct(id: string): boolean {
-    this.products = this.products.filter(p => p.id !== id);
-    return true;
-  }
-
   // --- INVENTORY API ---
-  public getInventoryMovements(): InventoryMovement[] {
-    return this.inventoryMovements;
-  }
-
   public getLowStockVariants(threshold = 5): { product: Product; variant: ProductVariant }[] {
     const lowStock: { product: Product; variant: ProductVariant }[] = [];
     this.products.forEach(p => {
@@ -175,32 +169,9 @@ class DataService {
     return lowStock;
   }
 
-  public adjustStock(
-    productId: string,
-    variantId: string,
-    delta: number,
-    type: 'IN' | 'OUT' | 'ADJUSTMENT' | 'DAMAGED',
-    reason: string,
-    branchId = 'br-main'
-  ): boolean {
-    const p = this.getProductById(productId);
-    if (!p) return false;
-    const v = (p.variants || []).find(varItem => varItem.id === variantId);
-    if (!v) return false;
-    v.stockQuantity = Math.max(0, v.stockQuantity + delta);
-    return true;
-  }
-
   // --- COUPONS ---
   public getCoupons(): Coupon[] {
     return this.coupons;
-  }
-
-  public saveCoupon(coupon: Coupon): Coupon {
-    const idx = this.coupons.findIndex(c => c.code.toUpperCase() === coupon.code.toUpperCase());
-    if (idx >= 0) this.coupons[idx] = coupon;
-    else this.coupons.push(coupon);
-    return coupon;
   }
 
   public validateCoupon(code: string, subtotal: number): { valid: boolean; discount: number; coupon?: Coupon; message: string } {
@@ -241,19 +212,6 @@ class DataService {
     } catch (err: any) {
       return { success: false, error: err.message || 'Failed to place order.' };
     }
-  }
-
-  public updateOrderStatus(orderId: string, fulfillmentStatus?: Order['fulfillmentStatus'], paymentStatus?: Order['paymentStatus'], receiptRef?: string): Order | undefined {
-    const order = this.orders.find(o => o.id === orderId || o.orderNumber === orderId);
-    if (!order) return undefined;
-    if (fulfillmentStatus) order.fulfillmentStatus = fulfillmentStatus;
-    if (paymentStatus) order.paymentStatus = paymentStatus;
-    if (receiptRef) order.mpesaReceipt = receiptRef;
-    return order;
-  }
-
-  public getOrders(): Order[] {
-    return this.orders;
   }
 
   public getBranches(): Branch[] {

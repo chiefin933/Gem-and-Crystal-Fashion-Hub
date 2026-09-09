@@ -64,7 +64,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       items: cart,
       paymentMethod,
       couponCode: appliedCoupon?.code,
-      mpesaPhone: paymentMethod === 'MPESA' ? mpesaPhone : undefined,
+      mpesaPhone: undefined,
     });
     setIsSubmitting(false);
 
@@ -153,15 +153,23 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <select
                   value={county}
                   onChange={(e) => setCounty(e.target.value)}
+                  required
                   className="w-full bg-[#121215] border border-gem-border rounded-lg px-3.5 py-2.5 text-white focus:border-gem-pink focus:outline-none cursor-pointer"
                 >
-                  <option value="Nairobi">Nairobi County</option>
-                  <option value="Mombasa">Mombasa County</option>
-                  <option value="Kisumu">Kisumu County</option>
-                  <option value="Nakuru">Nakuru County</option>
-                  <option value="Uasin Gishu">Eldoret / Uasin Gishu</option>
-                  <option value="Kiambu">Kiambu County</option>
-                  <option value="Kajiado">Kajiado / Kitengela</option>
+                  {[
+                    'Baringo','Bomet','Bungoma','Busia','Elgeyo-Marakwet',
+                    'Embu','Garissa','Homa Bay','Isiolo','Kajiado',
+                    'Kakamega','Kericho','Kiambu','Kilifi','Kirinyaga',
+                    'Kisii','Kisumu','Kitui','Kwale','Laikipia',
+                    'Lamu','Machakos','Makueni','Mandera','Marsabit',
+                    'Meru','Migori','Mombasa','Murang\'a','Nairobi',
+                    'Nakuru','Nandi','Narok','Nyamira','Nyandarua',
+                    'Nyeri','Samburu','Siaya','Taita-Taveta','Tana River',
+                    'Tharaka-Nithi','Trans-Nzoia','Turkana','Uasin Gishu',
+                    'Vihiga','Wajir','West Pokot',
+                  ].map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -247,7 +255,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <Smartphone className="w-5 h-5 text-emerald-400" />
                 </div>
                 <p className="text-[11px] text-slate-300 font-light mb-3">
-                  Enter your registered number. Once M-PESA is connected, we will send a secure payment prompt and confirm it automatically.
+                  Pay via M-PESA Lipa na M-PESA — Buy Goods. We'll confirm your payment automatically once Safaricom notifies us.
                 </p>
                 <span className="text-xs font-bold text-emerald-400">Recommended for Kenya</span>
               </div>
@@ -271,19 +279,20 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
             </div>
 
-            {/* M-PESA Specific Input */}
+            {/* M-PESA Till Payment Instructions */}
             {paymentMethod === 'MPESA' && (
-              <div className="p-4 rounded-xl bg-[#121215] border border-gem-border space-y-3">
-                <label className="font-bold text-white block">M-PESA Registered Phone Number</label>
-                <input
-                  type="tel"
-                  value={mpesaPhone}
-                  onChange={(e) => setMpesaPhone(e.target.value)}
-                  placeholder="e.g. 0712345678"
-                  className="w-full bg-[#09090b] border border-gem-border rounded-lg px-4 py-2.5 text-white font-mono font-bold text-sm focus:border-emerald-500 focus:outline-none"
-                />
-                <p className="text-[11px] text-slate-400">
-                  We will use this number for the secure M-PESA prompt for <strong className="text-emerald-400">KSh {grandTotal.toLocaleString()}</strong>. Payment is confirmed only after M-PESA responds to our backend.
+              <div className="p-4 rounded-xl bg-[#121215] border border-emerald-800/60 space-y-3">
+                <p className="font-bold text-emerald-400 text-sm">How to pay via M-PESA</p>
+                <ol className="text-[12px] text-slate-300 space-y-1 list-decimal list-inside">
+                  <li>Open M-PESA on your phone</li>
+                  <li>Select <strong className="text-white">Lipa na M-PESA</strong></li>
+                  <li>Select <strong className="text-white">Buy Goods and Services</strong></li>
+                  <li>Enter the Gem &amp; Crystal Till number (shown at the counter)</li>
+                  <li>Enter amount: <strong className="text-emerald-400">KSh {grandTotal.toLocaleString()}</strong></li>
+                  <li>Enter your PIN and confirm</li>
+                </ol>
+                <p className="text-[11px] text-slate-400 border-t border-zinc-800 pt-2">
+                  Your order will be confirmed automatically once Safaricom notifies our system. You will receive a confirmation on this page.
                 </p>
               </div>
             )}

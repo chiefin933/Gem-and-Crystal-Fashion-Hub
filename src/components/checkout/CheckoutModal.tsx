@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { X, ShieldCheck, Smartphone, CreditCard, ArrowRight, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, ShieldCheck, Smartphone, CreditCard, ArrowRight, Loader2, CheckCircle2, Clock } from 'lucide-react';
 import { useStore } from '../../context/useStore';
-import { dataService } from '../../utils/dataService';
+import { createCheckoutSession, pollCheckoutSession, CheckoutSessionResponse } from '../../api/client';
 import { Order } from '../../types/ecommerce';
 
 interface CheckoutModalProps {
@@ -17,7 +17,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 }) => {
   const { cart, cartSubtotal, clearCart, showToast, appliedCoupon } = useStore();
 
-  const [step, setStep] = useState<'info' | 'payment'>('info');
+  const [step, setStep] = useState<'info' | 'payment' | 'awaiting'>('info');
 
   // Guest Customer Form State
   const [fullName, setFullName] = useState('');
@@ -30,9 +30,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   // Payment Selection State — CARD is disabled until a payment gateway is integrated
   const [paymentMethod, setPaymentMethod] = useState<'MPESA'>('MPESA');
-  const [mpesaPhone, setMpesaPhone] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Session state — returned after successful session creation
+  const [session, setSession] = useState<CheckoutSessionResponse | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   if (!isOpen) return null;
 
@@ -51,31 +53,44 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const handleStartPayment = async () => {
     setIsSubmitting(true);
-    const result = await dataService.createOrderAsync({
-      customer: {
-        fullName,
-        email,
-        phone,
-        county,
-        townCity,
-        address,
-        notes,
-      },
-      items: cart,
-      paymentMethod,
-      couponCode: appliedCoupon?.code,
-      mpesaPhone: undefined,
-    });
-    setIsSubmitting(false);
-
-    if (!result.success || !result.order) {
-      showToast(result.error || 'Failed to place order. Stock may have changed.', 'error');
-      return;
+    try {
+      const sess = await createCheckoutSession({
+        customer: { fullName, email, phone, county, townCity, address, notes },
+        items: cart,
+        paymentMethod,
+        couponCode: appliedCoupon?.code,
+        mpesaPhone: undefined,
+      });
+      setSession(sess);
+      setStep('awaiting');
+      // Start polling for payment confirmation every 3 seconds
+      pollRef.current = setInterval(async () => {
+        try {
+          const status = await pollCheckoutSession(sess.sessionRef);
+          if (status.status === 'PAID' && status.orderNumber) {
+            if (pollRef.current) clearInterval(pollRef.current);
+            clearCart();
+            // Build a minimal Order object for the confirmation screen
+            onOrderSuccess({ orderNumber: status.orderNumber } as Order);
+          } else if (status.status === 'EXPIRED' || status.status === 'FAILED') {
+            if (pollRef.current) clearInterval(pollRef.current);
+            showToast('Payment session expired. Please try again.', 'error');
+            setStep('payment');
+            setSession(null);
+          }
+        } catch { /* keep polling */ }
+      }, 3000);
+    } catch (err: any) {
+      showToast(err.message || 'Failed to create checkout session.', 'error');
+    } finally {
+      setIsSubmitting(false);
     }
-
-    clearCart();
-    onOrderSuccess(result.order);
   };
+
+  // Clean up poll interval when modal closes
+  useEffect(() => {
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -100,7 +115,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             <span className="text-xs font-bold uppercase tracking-widest">Guest Checkout • Safe Encrypted</span>
           </div>
           <h2 className="font-serif text-2xl font-bold text-white">
-            {step === 'info' ? '1. Shipping & Delivery Address' : '2. Confirm Your Order'}
+            {step === 'info' ? '1. Shipping & Delivery Address' : step === 'payment' ? '2. Confirm Your Order' : '3. Complete Your M-PESA Payment'}
           </h2>
         </div>
 
@@ -140,10 +155,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   type="tel"
                   required
                   value={phone}
-                  onChange={(e) => {
-                    setPhone(e.target.value);
-                    setMpesaPhone(e.target.value);
-                  }}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="w-full bg-[#121215] border border-gem-border rounded-lg px-3.5 py-2.5 text-white focus:border-gem-pink focus:outline-none font-mono"
                 />
               </div>
@@ -312,9 +324,49 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 className="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all flex items-center space-x-2"
               >
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
-                <span>{isSubmitting ? 'PLACING ORDER…' : `PLACE ORDER • KSh ${grandTotal.toLocaleString()}`}</span>
+                <span>{isSubmitting ? 'CREATING ORDER…' : `CONFIRM & PAY • KSh ${grandTotal.toLocaleString()}`}</span>
               </button>
             </div>
+          </div>
+        )}
+
+        {/* STEP 3: AWAITING PAYMENT */}
+        {step === 'awaiting' && session && (
+          <div className="space-y-6 text-xs text-slate-200 text-center">
+            <div className="flex flex-col items-center space-y-4 py-4">
+              <Clock className="w-12 h-12 text-emerald-400 animate-pulse" />
+              <h3 className="font-serif text-xl font-bold text-white">Waiting for your M-PESA payment</h3>
+              <p className="text-slate-400 max-w-sm">
+                Complete your payment on your phone. This page will update automatically.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-emerald-950/30 border border-emerald-700/60 space-y-3 text-left">
+              <p className="font-bold text-emerald-300 text-sm">Payment Instructions</p>
+              <ol className="text-[12px] text-slate-300 space-y-1.5 list-decimal list-inside">
+                <li>Open <strong className="text-white">M-PESA</strong> → Lipa na M-PESA → Buy Goods</li>
+                <li>Till Number: <strong className="text-white font-mono text-base">{session.tillNumber ?? '(see cashier)'}</strong></li>
+                <li>Amount: <strong className="text-emerald-400 font-mono text-base">KSh {session.total.toLocaleString()}</strong></li>
+                <li>Reference: <strong className="text-white font-mono">{session.sessionRef}</strong></li>
+                <li>Enter your PIN and confirm</li>
+              </ol>
+            </div>
+
+            <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-400 flex items-center gap-2">
+              <Loader2 className="w-4 h-4 animate-spin text-emerald-400 shrink-0" />
+              <span>Waiting for Safaricom to confirm payment… this page refreshes automatically.</span>
+            </div>
+
+            <button
+              onClick={() => {
+                if (pollRef.current) clearInterval(pollRef.current);
+                setStep('payment');
+                setSession(null);
+              }}
+              className="text-slate-400 hover:text-white text-xs font-bold"
+            >
+              Cancel and go back
+            </button>
           </div>
         )}
 

@@ -122,6 +122,36 @@ export async function fetchOrderByNumber(orderNumber: string, trackingToken: str
   });
 }
 
+// ── Checkout Session (C2B Till payment flow) ──────────────────────────────
+
+export interface CheckoutSessionResponse {
+  sessionRef: string;
+  total: number;
+  deliveryFee: number;
+  discount: number;
+  couponCode: string | null;
+  expiresAt: string;
+  tillNumber: string | null;
+  status: string;
+  message: string;
+}
+
+export interface CheckoutSessionStatus {
+  sessionRef: string;
+  status: 'AWAITING_PAYMENT' | 'PAID' | 'EXPIRED' | 'FAILED';
+  total: number;
+  expiresAt: string;
+  orderNumber: string | null;
+}
+
+export async function createCheckoutSession(payload: PlaceOrderPayload): Promise<CheckoutSessionResponse> {
+  return apiFetch('/orders', { method: 'POST', body: JSON.stringify(payload) });
+}
+
+export async function pollCheckoutSession(ref: string): Promise<CheckoutSessionStatus> {
+  return apiFetch(`/orders/checkout-session/${encodeURIComponent(ref)}`);
+}
+
 // ── Coupons ───────────────────────────────────────────────────────────────
 
 export async function validateCoupon(code: string, orderTotal: number) {

@@ -1,7 +1,7 @@
 // API client for the Gem & Crystal storefront
-// All requests proxy through Vite dev server → http://localhost:4000
-
-const API_BASE = '/api';
+// Development: Vite proxies /api → localhost:4000 (no VITE_API_URL needed)
+// Production: set VITE_API_URL=https://api.gemandcrystal.co.ke
+export const API_BASE = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '') || '/api';
 
 async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`, {
@@ -110,6 +110,7 @@ export interface PlaceOrderPayload {
   couponCode?: string;
   paymentMethod: 'MPESA' | 'CARD';
   mpesaPhone?: string;
+  requestedDeliveryDate?: string;
 }
 
 export async function placeOrder(payload: PlaceOrderPayload) {
@@ -142,6 +143,7 @@ export interface CheckoutSessionStatus {
   total: number;
   expiresAt: string;
   orderNumber: string | null;
+  mpesaReceipt: string | null;
 }
 
 export async function createCheckoutSession(payload: PlaceOrderPayload): Promise<CheckoutSessionResponse> {

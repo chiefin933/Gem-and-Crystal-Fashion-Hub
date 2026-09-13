@@ -113,6 +113,8 @@ export interface Order {
   mpesaReceipt?: string;
   stripePaymentId?: string;
   createdAt: string;
+  orderedAt?: string;
+  requestedDeliveryDate?: string;
   branchId: string;
 }
 

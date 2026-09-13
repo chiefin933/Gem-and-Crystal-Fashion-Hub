@@ -27,6 +27,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [townCity, setTownCity] = useState('');
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
+  const [requestedDeliveryDate, setRequestedDeliveryDate] = useState('');
 
   // Payment Selection State — CARD is disabled until a payment gateway is integrated
   const [paymentMethod, setPaymentMethod] = useState<'MPESA'>('MPESA');
@@ -36,7 +37,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [session, setSession] = useState<CheckoutSessionResponse | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  if (!isOpen) return null;
 
   const deliveryFee = cartSubtotal >= 10000 ? 0 : 350;
   const appliedDiscount = appliedCoupon?.discount || 0;
@@ -56,10 +56,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     try {
       const sess = await createCheckoutSession({
         customer: { fullName, email, phone, county, townCity, address, notes },
-        items: cart,
+        items: cart.map(({ variantId, quantity }) => ({ variantId, quantity })),
         paymentMethod,
         couponCode: appliedCoupon?.code,
         mpesaPhone: undefined,
+        requestedDeliveryDate: requestedDeliveryDate || undefined,
       });
       setSession(sess);
       setStep('awaiting');
@@ -69,9 +70,29 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           const status = await pollCheckoutSession(sess.sessionRef);
           if (status.status === 'PAID' && status.orderNumber) {
             if (pollRef.current) clearInterval(pollRef.current);
+            onOrderSuccess({
+              id: '',
+              orderNumber: status.orderNumber,
+              customer: { fullName, email, phone, county, townCity, address, notes: notes || undefined },
+              items: cart.map(({ productId, variantId, title, size, color, price, quantity, image }) => ({
+                productId, variantId, title, size, color, price, quantity, image,
+              })),
+              subtotal: cartSubtotal,
+              discount: appliedDiscount,
+              couponCode: appliedCoupon?.code,
+              deliveryFee: sess.deliveryFee,
+              total: sess.total,
+              currency: 'KES',
+              paymentMethod,
+              paymentStatus: 'PAID',
+              orderedAt: new Date().toISOString(),
+              requestedDeliveryDate: requestedDeliveryDate || undefined,
+              fulfillmentStatus: 'PENDING',
+              mpesaReceipt: status.mpesaReceipt || undefined,
+              createdAt: new Date().toISOString(),
+              branchId: 'ONLINE',
+            });
             clearCart();
-            // Build a minimal Order object for the confirmation screen
-            onOrderSuccess({ orderNumber: status.orderNumber } as Order);
           } else if (status.status === 'EXPIRED' || status.status === 'FAILED') {
             if (pollRef.current) clearInterval(pollRef.current);
             showToast('Payment session expired. Please try again.', 'error');
@@ -92,6 +113,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, []);
 
+
+  if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
@@ -209,6 +232,25 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   onChange={(e) => setAddress(e.target.value)}
                   className="w-full bg-[#121215] border border-gem-border rounded-lg px-3.5 py-2.5 text-white focus:border-gem-pink focus:outline-none"
                 />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-xl border border-gem-border bg-[#121215]/50 p-4">
+              <div>
+                <p className="font-bold text-slate-300 mb-1">Date Ordered</p>
+                <p className="text-white">{new Date().toLocaleDateString('en-KE', { dateStyle: 'full' })}</p>
+                <p className="text-slate-500 mt-1">Set automatically when you place the order.</p>
+              </div>
+              <div>
+                <label className="font-bold text-slate-300 block mb-1">Requested Delivery Date <span className="text-slate-500">(Optional)</span></label>
+                <input
+                  type="date"
+                  min={new Date().toISOString().slice(0, 10)}
+                  value={requestedDeliveryDate}
+                  onChange={(e) => setRequestedDeliveryDate(e.target.value)}
+                  className="w-full bg-[#09090b] border border-gem-border rounded-lg px-3.5 py-2.5 text-white focus:border-gem-pink focus:outline-none"
+                />
+                <p className="text-slate-500 mt-1">Leave blank for the earliest available delivery.</p>
               </div>
             </div>
 

@@ -51,9 +51,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     }
   };
 
-  const deliveryFee = cartSubtotal >= 10000 || cartSubtotal === 0 ? 0 : 350;
   const appliedDiscount = appliedCoupon?.discount || 0;
-  const grandTotal = Math.max(0, cartSubtotal - appliedDiscount + deliveryFee);
+  const grandTotal = Math.max(0, cartSubtotal - appliedDiscount);
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -214,12 +213,15 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               )}
 
               <div className="flex justify-between">
-                <span>Kenya Delivery</span>
-                <span>{deliveryFee === 0 ? <strong className="text-emerald-400">FREE</strong> : `KSh ${deliveryFee}`}</span>
+                <span>Delivery</span>
+                <span className="text-amber-300">Arranged separately</span>
               </div>
+              <p className="text-[10px] leading-relaxed text-slate-500">
+                Pay the delivery person directly after agreeing the cost. It is not included in this order total.
+              </p>
 
               <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-gem-border">
-                <span>Grand Total</span>
+                <span>Order Total</span>
                 <span className="text-gem-pink">KSh {grandTotal.toLocaleString()}</span>
               </div>
             </div>

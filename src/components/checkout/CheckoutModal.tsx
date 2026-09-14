@@ -38,9 +38,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
 
-  const deliveryFee = cartSubtotal >= 10000 ? 0 : 350;
   const appliedDiscount = appliedCoupon?.discount || 0;
-  const grandTotal = Math.max(0, cartSubtotal - appliedDiscount + deliveryFee);
+  const grandTotal = Math.max(0, cartSubtotal - appliedDiscount);
 
   const handleInfoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -267,9 +266,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
             {/* MANDATORY DELIVERY NOTICE */}
             <div className="p-3.5 bg-amber-950/40 border border-amber-800/60 rounded-xl text-[11px] text-amber-200 leading-relaxed font-medium">
-              <strong>Delivery Fee Notice:</strong> Delivery is calculated in the total shown here. Free delivery applies to orders from KSh 10,000. Orders originate from our Roysambu, Nairobi hub.
+              <strong>Delivery arrangement:</strong> Delivery is arranged and paid directly between you and the delivery person. It is not included in the product order total. Orders originate from our Roysambu, Nairobi hub.
             </div>
-
             <div className="pt-4 border-t border-gem-border flex items-center justify-between">
               <span className="text-sm font-extrabold text-white">
                 Total: <span className="text-gem-pink">KSh {grandTotal.toLocaleString()}</span>

@@ -332,7 +332,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                 </button>
                 {openAccordion === 'shipping' && (
                   <div className="px-4 pb-4 text-xs text-slate-400 font-light border-t border-gem-border/40 pt-3">
-                    Same-day delivery available within Nairobi CBD & suburbs. Upcountry delivery across Kenya (Mombasa, Kisumu, Nakuru, Eldoret) fulfilled within 24-48 hours. Free shipping on orders above KSh 10,000.
+                    Same-day delivery may be available within Nairobi CBD and suburbs. Upcountry delivery can be arranged for Kenya locations. Agree the delivery cost directly with the delivery person; it is not included in the product order total.
                   </div>
                 )}
               </div>

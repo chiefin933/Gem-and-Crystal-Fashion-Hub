@@ -94,9 +94,10 @@ export const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
               </div>
             )}
             <div className="flex justify-between text-slate-400">
-              <span>Kenya Delivery</span>
-              <span>KSh {order.deliveryFee}</span>
+              <span>Delivery</span>
+              <span className="text-amber-300">Paid separately</span>
             </div>
+            <p className="text-[10px] leading-relaxed text-slate-500">Agree and pay the delivery person directly; this is not included in the payment above.</p>
             <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-gem-border">
               <span>Total Paid</span>
               <span className="text-gem-pink">KSh {order.total.toLocaleString()}</span>

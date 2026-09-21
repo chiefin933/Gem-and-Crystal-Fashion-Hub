@@ -6,6 +6,7 @@ export const API_BASE = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '') 
 async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
+    signal: options?.signal ?? AbortSignal.timeout(15_000),
     headers: {
       'Content-Type': 'application/json',
       ...options?.headers,
@@ -126,6 +127,7 @@ export async function fetchOrderByNumber(orderNumber: string, trackingToken: str
 // ── Checkout Session (C2B Till payment flow) ──────────────────────────────
 
 export interface CheckoutSessionResponse {
+  trackingToken: string;
   sessionRef: string;
   total: number;
   deliveryFee: number;
@@ -138,6 +140,7 @@ export interface CheckoutSessionResponse {
 }
 
 export interface CheckoutSessionStatus {
+  order: import('../types/ecommerce').Order | null;
   sessionRef: string;
   status: 'AWAITING_PAYMENT' | 'PAID' | 'EXPIRED' | 'FAILED';
   total: number;
@@ -150,8 +153,8 @@ export async function createCheckoutSession(payload: PlaceOrderPayload): Promise
   return apiFetch('/orders', { method: 'POST', body: JSON.stringify(payload) });
 }
 
-export async function pollCheckoutSession(ref: string): Promise<CheckoutSessionStatus> {
-  return apiFetch(`/orders/checkout-session/${encodeURIComponent(ref)}`);
+export async function pollCheckoutSession(ref: string, trackingToken: string): Promise<CheckoutSessionStatus> {
+  return apiFetch(`/orders/checkout-session/${encodeURIComponent(ref)}`, { headers: { 'X-Order-Tracking-Token': trackingToken } });
 }
 
 // ── Coupons ───────────────────────────────────────────────────────────────

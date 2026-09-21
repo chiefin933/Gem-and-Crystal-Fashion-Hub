@@ -7,10 +7,7 @@ import { Footer } from './components/layout/Footer';
 import { HeroSection } from './components/home/HeroSection';
 import { BenefitsStrip } from './components/home/BenefitsStrip';
 import { CategoryGrid } from './components/home/CategoryGrid';
-import { TrendingSection } from './components/home/TrendingSection';
 import { EditorialBanner } from './components/home/EditorialBanner';
-import { Testimonials } from './components/home/Testimonials';
-import { Newsletter } from './components/home/Newsletter';
 import { ProductGrid } from './components/product/ProductGrid';
 import { ProductDetailPage } from './components/product/ProductDetailPage';
 import { ProductQuickView } from './components/product/ProductQuickView';
@@ -103,8 +100,6 @@ const MainAppContent: React.FC = () => {
             <BenefitsStrip />
             <CategoryGrid setCurrentTab={setCurrentTab} />
             <EditorialBanner setCurrentTab={setCurrentTab} setFilters={setFilters} />
-            <Testimonials />
-            <Newsletter />
           </>
         )}
 

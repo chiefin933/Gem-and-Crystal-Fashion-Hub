@@ -8,7 +8,7 @@ import {
   CartItem
 } from '../types/ecommerce';
 import { PRODUCTS, INITIAL_COUPONS, INITIAL_BRANCHES } from './demoData';
-import { fetchProducts as apiFetchProducts, placeOrder as apiPlaceOrder, validateCoupon as apiValidateCoupon } from '../api/client';
+import { fetchProducts as apiFetchProducts, placeOrder as apiPlaceOrder } from '../api/client';
 
 /**
  * PAYMENT_CAPABILITIES — single source of truth for which payment methods

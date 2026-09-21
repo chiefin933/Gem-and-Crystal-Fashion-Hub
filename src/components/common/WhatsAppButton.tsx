@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
+import { API_BASE } from '../../api/client';
 
 export const WhatsAppButton: React.FC = () => {
   const [whatsappNumber, setWhatsappNumber] = useState('254718796296');
 
   useEffect(() => {
-    fetch('/api/settings')
+    fetch(`${API_BASE}/settings`)
       .then(res => res.json())
       .then(data => {
         if (data?.whatsappNumber) {

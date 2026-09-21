@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight, ShoppingBag, Heart, Star, Truck, ShieldCheck, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, ShoppingBag, Heart, Star, Truck, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Product } from '../../types/ecommerce';
 import { useStore } from '../../context/useStore';
 import { ProductCard } from './ProductCard';

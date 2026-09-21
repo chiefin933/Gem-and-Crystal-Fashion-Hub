@@ -5,18 +5,18 @@ export const BenefitsStrip: React.FC = () => {
   const benefits = [
     {
       icon: ShieldCheck,
-      title: 'Secure Payments',
-      subtitle: '100% Safe & Secure (M-PESA / Card)',
+      title: 'M-PESA Payments',
+      subtitle: 'Payment verified before fulfillment',
     },
     {
       icon: Truck,
-      title: 'Fast Delivery',
-      subtitle: 'Nationwide Kenya Delivery',
+      title: 'Delivery Arrangements',
+      subtitle: 'Agree availability and cost with the shop',
     },
     {
       icon: RotateCcw,
-      title: 'Easy Returns',
-      subtitle: '14 Days Return Policy',
+      title: 'Order Support',
+      subtitle: 'Contact us about returns or exchanges',
     },
     {
       icon: Gem,
@@ -25,8 +25,8 @@ export const BenefitsStrip: React.FC = () => {
     },
     {
       icon: Headphones,
-      title: '24/7 Support',
-      subtitle: "We're Here to Help",
+      title: 'Contact the Boutique',
+      subtitle: 'Send your questions on WhatsApp',
     },
   ];
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Home } from 'lucide-react';
 
 interface FloatingHomeButtonProps {
@@ -10,13 +10,7 @@ export const FloatingHomeButton: React.FC<FloatingHomeButtonProps> = ({
   currentTab,
   onGoHome,
 }) => {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    setVisible(currentTab !== 'home');
-  }, [currentTab]);
-
-  if (!visible) return null;
+  if (currentTab === 'home') return null;
 
   return (
     <button

@@ -48,8 +48,8 @@ Before starting the API for the first time, configure its `.env`, then apply the
 
 ```bash
 cd ../gem-crystal-api
-npx prisma db push
-npm run db:seed
+npm run db:migrate:deploy
+npm run db:seed:dev
 ```
 
 ## M-Pesa payment safety
@@ -57,6 +57,10 @@ npm run db:seed
 The system does not accept a manually entered M-Pesa receipt as payment proof. The backend must receive and verify the Safaricom callback before an order or POS sale becomes paid. A confirmed payment is then sent to the authenticated POS as a popup.
 
 To enable real payments, configure the Daraja variables in `gem-crystal-api/.env` using `.env.example` as the template. Keep real keys in your deployment secret manager and use a public HTTPS callback address.
+
+## Database backups
+
+Daily local backups are configured through the operating-system scheduler. From `gem-crystal-api`, run `npm run db:backup` for a new snapshot and `npm run db:backup:status` to verify freshness. See [backup and recovery instructions](../gem-crystal-api/docs/DATABASE_BACKUPS.md). An off-device copy is required for disk-loss protection.
 
 ## Pre-launch checklist
 

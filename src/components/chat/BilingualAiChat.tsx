@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Bot, X, Send, MessageCircle, Globe, Loader2 } from 'lucide-react';
+import { API_BASE } from '../../api/client';
 
 interface ChatMessage {
   id: string;
@@ -8,7 +9,7 @@ interface ChatMessage {
   timestamp: string;
 }
 
-const API_URL = (import.meta.env.VITE_API_URL ?? '') + '/api/ai/chat';
+const API_URL = `${API_BASE}/ai/chat`;
 
 export const BilingualAiChat: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,13 +53,15 @@ export const BilingualAiChat: React.FC = () => {
     const history = messages
       .filter(m => m.id !== 'welcome')
       .slice(-20)
-      .map(m => ({ role: m.sender === 'user' ? 'user' : 'assistant', content: m.text }));
+      .map(m => ({ role: m.sender === 'user' ? 'user' : 'assistant', content: m.text.slice(0, m.sender === 'user' ? 500 : 12000) }));
+    while (history.reduce((total, item) => total + item.content.length, 0) > 24000) history.shift();
 
     try {
       const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userText, history }),
+        signal: AbortSignal.timeout(50_000),
       });
 
       const data = await res.json();

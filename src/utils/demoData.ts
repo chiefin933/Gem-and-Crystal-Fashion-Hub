@@ -1,5 +1,4 @@
 import { Product, CategoryItem, Branch, Coupon } from '../types/ecommerce';
-import heroModel from '../assets/hero_model_1787579953828.png';
 
 // Set to empty string to hide the AI-generated model image and show the brand card instead
 export const HERO_REAL_IMAGE = '';

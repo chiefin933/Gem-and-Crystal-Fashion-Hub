@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { X, ShoppingBag, Heart, Star, Check } from 'lucide-react';
+import { X, ShoppingBag, Heart, Star } from 'lucide-react';
 import { useStore } from '../../context/useStore';
+import { Product } from '../../types/ecommerce';
 
 export const ProductQuickView: React.FC = () => {
-  const { quickViewProduct, setQuickViewProduct, addToCart, toggleWishlist, isInWishlist } = useStore();
+  const { quickViewProduct } = useStore();
+  return quickViewProduct ? <ProductQuickViewContent key={quickViewProduct.id} quickViewProduct={quickViewProduct} /> : null;
+};
 
-  if (!quickViewProduct) return null;
+const ProductQuickViewContent: React.FC<{ quickViewProduct: Product }> = ({ quickViewProduct }) => {
+  const { setQuickViewProduct, addToCart, toggleWishlist, isInWishlist } = useStore();
 
   const [selectedSize, setSelectedSize] = useState(quickViewProduct.sizes[0] || 'M');
   const [selectedColor, setSelectedColor] = useState(quickViewProduct.colors[0]?.name || 'Standard');
-  const [quantity, setQuantity] = useState(1);
+  const quantity = 1;
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const selectedVariant = quickViewProduct.variants.find(

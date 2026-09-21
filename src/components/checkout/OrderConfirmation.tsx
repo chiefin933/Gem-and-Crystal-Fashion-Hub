@@ -27,7 +27,7 @@ export const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
               Order Received
             </span>
             <h1 className="font-serif text-3xl font-bold text-white">
-              THANK YOU — WE’LL CONFIRM PAYMENT
+              THANK YOU — PAYMENT CONFIRMED
             </h1>
             <p className="text-xs text-slate-400 mt-1">
               Order Reference: <strong className="text-white font-mono">{order.orderNumber}</strong>

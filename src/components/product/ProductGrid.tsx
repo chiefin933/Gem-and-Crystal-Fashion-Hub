@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Filter, SlidersHorizontal, PackageSearch } from 'lucide-react';
+import { SlidersHorizontal, PackageSearch } from 'lucide-react';
 import { Product, FilterState } from '../../types/ecommerce';
 import { ProductCard } from './ProductCard';
 import { ProductFilters } from './ProductFilters';

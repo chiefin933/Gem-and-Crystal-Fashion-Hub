@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, ShieldCheck, Smartphone, CreditCard, ArrowRight, Loader2, CheckCircle2, Clock } from 'lucide-react';
+import { X, ShieldCheck, Smartphone, CreditCard, ArrowRight, Loader2, Clock } from 'lucide-react';
 import { useStore } from '../../context/useStore';
 import { createCheckoutSession, pollCheckoutSession, CheckoutSessionResponse } from '../../api/client';
 import { Order } from '../../types/ecommerce';
@@ -10,6 +10,21 @@ interface CheckoutModalProps {
   onOrderSuccess: (order: Order) => void;
 }
 
+const PENDING_CHECKOUT_KEY = 'gem.pendingCheckout.v1';
+function readPendingCheckout(): CheckoutSessionResponse | null {
+  try {
+    const value = JSON.parse(sessionStorage.getItem(PENDING_CHECKOUT_KEY) || 'null');
+    return value && typeof value.sessionRef === 'string' && typeof value.trackingToken === 'string'
+      && typeof value.total === 'number' ? value : null;
+  } catch { return null; }
+}
+function savePendingCheckout(value: CheckoutSessionResponse | null) {
+  try {
+    if (value) sessionStorage.setItem(PENDING_CHECKOUT_KEY, JSON.stringify(value));
+    else sessionStorage.removeItem(PENDING_CHECKOUT_KEY);
+  } catch { /* The in-memory session still works when browser storage is disabled. */ }
+}
+
 export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   isOpen,
   onClose,
@@ -17,7 +32,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 }) => {
   const { cart, cartSubtotal, clearCart, showToast, appliedCoupon } = useStore();
 
-  const [step, setStep] = useState<'info' | 'payment' | 'awaiting'>('info');
+  const [step, setStep] = useState<'info' | 'payment' | 'awaiting'>(() => readPendingCheckout() ? 'awaiting' : 'info');
 
   // Guest Customer Form State
   const [fullName, setFullName] = useState('');
@@ -34,8 +49,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   // Session state — returned after successful session creation
-  const [session, setSession] = useState<CheckoutSessionResponse | null>(null);
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [session, setSession] = useState<CheckoutSessionResponse | null>(readPendingCheckout);
+  const submittingRef = useRef(false);
+  const [paymentStatus, setPaymentStatus] = useState('AWAITING_PAYMENT');
+  const [pollError, setPollError] = useState('');
+  const callbacks = useRef({ onOrderSuccess, clearCart });
+  useEffect(() => { callbacks.current = { onOrderSuccess, clearCart }; }, [onOrderSuccess, clearCart]);
 
 
   const appliedDiscount = appliedCoupon?.discount || 0;
@@ -51,66 +70,56 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   };
 
   const handleStartPayment = async () => {
+    if (submittingRef.current) return;
+    submittingRef.current = true;
     setIsSubmitting(true);
     try {
       const sess = await createCheckoutSession({
         customer: { fullName, email, phone, county, townCity, address, notes },
         items: cart.map(({ variantId, quantity }) => ({ variantId, quantity })),
-        paymentMethod,
-        couponCode: appliedCoupon?.code,
-        mpesaPhone: undefined,
+        paymentMethod, couponCode: appliedCoupon?.code,
         requestedDeliveryDate: requestedDeliveryDate || undefined,
       });
+      savePendingCheckout(sess);
       setSession(sess);
+      setPaymentStatus('AWAITING_PAYMENT');
       setStep('awaiting');
-      // Start polling for payment confirmation every 3 seconds
-      pollRef.current = setInterval(async () => {
-        try {
-          const status = await pollCheckoutSession(sess.sessionRef);
-          if (status.status === 'PAID' && status.orderNumber) {
-            if (pollRef.current) clearInterval(pollRef.current);
-            onOrderSuccess({
-              id: '',
-              orderNumber: status.orderNumber,
-              customer: { fullName, email, phone, county, townCity, address, notes: notes || undefined },
-              items: cart.map(({ productId, variantId, title, size, color, price, quantity, image }) => ({
-                productId, variantId, title, size, color, price, quantity, image,
-              })),
-              subtotal: cartSubtotal,
-              discount: appliedDiscount,
-              couponCode: appliedCoupon?.code,
-              deliveryFee: sess.deliveryFee,
-              total: sess.total,
-              currency: 'KES',
-              paymentMethod,
-              paymentStatus: 'PAID',
-              orderedAt: new Date().toISOString(),
-              requestedDeliveryDate: requestedDeliveryDate || undefined,
-              fulfillmentStatus: 'PENDING',
-              mpesaReceipt: status.mpesaReceipt || undefined,
-              createdAt: new Date().toISOString(),
-              branchId: 'ONLINE',
-            });
-            clearCart();
-          } else if (status.status === 'EXPIRED' || status.status === 'FAILED') {
-            if (pollRef.current) clearInterval(pollRef.current);
-            showToast('Payment session expired. Please try again.', 'error');
-            setStep('payment');
-            setSession(null);
-          }
-        } catch { /* keep polling */ }
-      }, 3000);
-    } catch (err: any) {
-      showToast(err.message || 'Failed to create checkout session.', 'error');
+    } catch (err: unknown) {
+      showToast(err instanceof Error ? err.message : 'Failed to create checkout session.', 'error');
     } finally {
+      submittingRef.current = false;
       setIsSubmitting(false);
     }
   };
 
-  // Clean up poll interval when modal closes
+  // One request at a time; resume the same payment after reopening or refreshing.
   useEffect(() => {
-    return () => { if (pollRef.current) clearInterval(pollRef.current); };
-  }, []);
+    if (!isOpen || step !== 'awaiting' || !session) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const poll = async () => {
+      try {
+        const status = await pollCheckoutSession(session.sessionRef, session.trackingToken);
+        if (cancelled) return;
+        setPollError('');
+        setPaymentStatus(status.status);
+        if (status.status === 'PAID' && status.order) {
+          savePendingCheckout(null);
+          setSession(null);
+          setStep('info');
+          callbacks.current.clearCart();
+          callbacks.current.onOrderSuccess(status.order);
+          return;
+        }
+      } catch {
+        if (cancelled) return;
+        setPollError('Connection interrupted. We will keep checking. Do not pay again.');
+      }
+      if (!cancelled) timer = setTimeout(() => void poll(), 3000);
+    };
+    void poll();
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [isOpen, session, step]);
 
 
   if (!isOpen) return null;
@@ -307,7 +316,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <Smartphone className="w-5 h-5 text-emerald-400" />
                 </div>
                 <p className="text-[11px] text-slate-300 font-light mb-3">
-                  Pay via M-PESA Lipa na M-PESA — Buy Goods. We'll confirm your payment automatically once Safaricom notifies us.
+                  Pay via M-PESA Buy Goods. Keep your checkout reference and contact the shop to link your confirmed payment.
                 </p>
                 <span className="text-xs font-bold text-emerald-400">Recommended for Kenya</span>
               </div>
@@ -335,16 +344,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             {paymentMethod === 'MPESA' && (
               <div className="p-4 rounded-xl bg-[#121215] border border-emerald-800/60 space-y-3">
                 <p className="font-bold text-emerald-400 text-sm">How to pay via M-PESA</p>
-                <ol className="text-[12px] text-slate-300 space-y-1 list-decimal list-inside">
-                  <li>Open M-PESA on your phone</li>
-                  <li>Select <strong className="text-white">Lipa na M-PESA</strong></li>
-                  <li>Select <strong className="text-white">Buy Goods and Services</strong></li>
-                  <li>Enter the Gem &amp; Crystal Till number (shown at the counter)</li>
-                  <li>Enter amount: <strong className="text-emerald-400">KSh {grandTotal.toLocaleString()}</strong></li>
-                  <li>Enter your PIN and confirm</li>
-                </ol>
+
                 <p className="text-[11px] text-slate-400 border-t border-zinc-800 pt-2">
-                  Your order will be confirmed automatically once Safaricom notifies our system. You will receive a confirmation on this page.
+                  Create your checkout first to receive the Till number and reference. The shop will verify your payment and this page will show your confirmed order.
                 </p>
               </div>
             )}
@@ -364,7 +366,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 className="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-60 text-white font-extrabold text-xs uppercase tracking-widest rounded-xl shadow-lg transition-all flex items-center space-x-2"
               >
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
-                <span>{isSubmitting ? 'CREATING ORDER…' : `CONFIRM & PAY • KSh ${grandTotal.toLocaleString()}`}</span>
+                <span>{isSubmitting ? 'PREPARING CHECKOUT…' : `CONFIRM & PAY • KSh ${grandTotal.toLocaleString()}`}</span>
               </button>
             </div>
           </div>
@@ -375,9 +377,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           <div className="space-y-6 text-xs text-slate-200 text-center">
             <div className="flex flex-col items-center space-y-4 py-4">
               <Clock className="w-12 h-12 text-emerald-400 animate-pulse" />
-              <h3 className="font-serif text-xl font-bold text-white">Waiting for your M-PESA payment</h3>
+              <h3 className="font-serif text-xl font-bold text-white">{paymentStatus === 'EXPIRED' || paymentStatus === 'FAILED' ? 'Payment needs shop assistance' : 'Waiting for payment confirmation'}</h3>
               <p className="text-slate-400 max-w-sm">
-                Complete your payment on your phone. This page will update automatically.
+                {paymentStatus === 'EXPIRED' || paymentStatus === 'FAILED' ? 'If you have paid, do not pay again. Contact the shop with your checkout reference and M-PESA receipt so they can verify the payment or arrange a refund.' : 'After paying, share your checkout reference with the shop. This page updates when your payment has been verified and linked.'}
               </p>
             </div>
 
@@ -387,25 +389,26 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <li>Open <strong className="text-white">M-PESA</strong> → Lipa na M-PESA → Buy Goods</li>
                 <li>Till Number: <strong className="text-white font-mono text-base">{session.tillNumber ?? '(see cashier)'}</strong></li>
                 <li>Amount: <strong className="text-emerald-400 font-mono text-base">KSh {session.total.toLocaleString()}</strong></li>
-                <li>Reference: <strong className="text-white font-mono">{session.sessionRef}</strong></li>
+                <li>Keep this checkout reference for the shop: <strong className="text-white font-mono">{session.sessionRef}</strong>. Buy Goods does not ask you to enter it.</li>
                 <li>Enter your PIN and confirm</li>
               </ol>
             </div>
 
             <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 text-[11px] text-zinc-400 flex items-center gap-2">
               <Loader2 className="w-4 h-4 animate-spin text-emerald-400 shrink-0" />
-              <span>Waiting for Safaricom to confirm payment… this page refreshes automatically.</span>
+              <span>{pollError || "Checking payment status. Keep your checkout reference; do not pay twice."}</span>
             </div>
 
+            <p className="text-[11px] text-zinc-400">Leaving this checkout does not cancel or refund a payment. If you have paid, contact the shop before starting again.</p>
             <button
               onClick={() => {
-                if (pollRef.current) clearInterval(pollRef.current);
+                savePendingCheckout(null);
                 setStep('payment');
                 setSession(null);
               }}
               className="text-slate-400 hover:text-white text-xs font-bold"
             >
-              Cancel and go back
+              Leave this checkout and go back
             </button>
           </div>
         )}

@@ -179,7 +179,7 @@ const MainAppContent: React.FC = () => {
         {currentTab === 'contact-us' && (
           <section className="py-20 bg-[#09090b]">
             <div className="max-w-3xl mx-auto px-4 crystal-card p-8 rounded-2xl border border-gem-pink/40 space-y-6">
-              <h1 className="font-serif text-3xl font-bold text-white">Contact Gem & Crystal Concierge</h1>
+              <h1 className="font-serif text-3xl font-bold text-white">Contact Gem &amp; Crystal Fashion Hub Concierge</h1>
               <p className="text-xs text-slate-400">Have a question about sizing, delivery, or custom orders? Reach out to our boutique team.</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 <div className="p-4 rounded-xl bg-[#121215] border border-gem-border">

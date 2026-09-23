@@ -26,7 +26,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
       ))}
     </ul>
   );
-  const SupportLinks = () => <ul className="space-y-2 pt-3"><li><button onClick={() => setCurrentTab('about-us')} className="hover:text-gem-pink">About Gem & Crystal</button></li><li><button onClick={() => setCurrentTab('contact-us')} className="hover:text-gem-pink">Contact boutique concierge</button></li></ul>;
+  const SupportLinks = () => <ul className="space-y-2 pt-3"><li><button onClick={() => setCurrentTab('about-us')} className="hover:text-gem-pink">About Gem &amp; Crystal Fashion Hub</button></li><li><button onClick={() => setCurrentTab('contact-us')} className="hover:text-gem-pink">Contact boutique concierge</button></li></ul>;
 
   return (
     <footer className="bg-[#1c1713] border-t border-[#392d27] text-[#d9cbb9] text-xs">
@@ -52,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
                   GEM & CRYSTAL
                 </span>
                 <span className="text-[10px] tracking-[0.25em] text-gem-pink font-semibold">
-                  BE BOLD. BE BRIGHT. BE YOU.
+                  FASHION HUB · BE BOLD. BE BRIGHT. BE YOU.
                 </span>
               </div>
             </div>
@@ -121,7 +121,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
             <ul className="space-y-2">
               <li>
                 <button onClick={() => setCurrentTab('about-us')} className="hover:text-gem-pink transition-colors">
-                  About Gem & Crystal
+                  About Gem &amp; Crystal Fashion Hub
                 </button>
               </li>
               <li>

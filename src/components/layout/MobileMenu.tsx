@@ -41,7 +41,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                 <path d="M12 2L2 9l10 13 10-13-10-7zm0 3.2L18.4 9H5.6L12 5.2z"/>
               </svg>
             </div>
-            <div><span className="block font-serif text-lg font-bold text-[#181411]">GEM & CRYSTAL</span><span className="text-[9px] font-bold uppercase tracking-[.18em] text-gem-pink">Fashion hub</span></div>
+            <div><span className="block font-serif text-lg font-bold text-[#181411]">GEM &amp; CRYSTAL</span><span className="text-[9px] font-bold uppercase tracking-[.18em] text-gem-pink">Fashion hub</span></div>
           </div>
 
           <button onClick={onClose} aria-label="Close menu" className="p-2 text-[#5e5147] hover:text-gem-pink focus-visible:outline focus-visible:outline-2 focus-visible:outline-gem-pink">

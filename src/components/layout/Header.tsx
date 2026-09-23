@@ -70,7 +70,7 @@ export const Header: React.FC<HeaderProps> = ({ currentTab, setCurrentTab, onOpe
                 GEM & CRYSTAL
               </span>
               <span className="hidden min-[381px]:block text-[10px] tracking-[0.25em] text-slate-400 font-medium">
-                CURATED FASHION
+                FASHION HUB
               </span>
             </div>
           </div>

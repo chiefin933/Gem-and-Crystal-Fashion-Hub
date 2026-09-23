@@ -85,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
         </button>
 
         {/* Quick View & Quick Add */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-10">
+        <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2 opacity-0 max-md:opacity-100 group-hover:opacity-100 transform translate-y-2 max-md:translate-y-0 group-hover:translate-y-0 transition-all duration-300 z-10">
           <button
             onClick={(e) => { e.stopPropagation(); setQuickViewProduct(product); }}
             className="flex-1 py-2 px-3 bg-[#1c1713]/95 hover:bg-gem-pink text-white text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors"
@@ -105,7 +105,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
       </div>
 
       {/* Details Section */}
-      <div className="p-4 flex flex-col flex-1 justify-between text-[#181411]">
+      <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between text-[#181411]">
         <div>
           <span className="text-[10px] font-bold uppercase text-gem-pink tracking-wider block mb-1">
             {product.category}
@@ -142,7 +142,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
         {/* Pricing & Stock */}
         <div className="mt-4 pt-3 border-t border-[#d9cbb9] flex items-center justify-between">
           <div className="flex items-baseline space-x-2">
-            <span className="text-sm font-extrabold text-[#181411] font-sans">
+            <span className="text-base font-extrabold text-[#181411] font-sans">
               KSh {displayPrice.toLocaleString()}
             </span>
             {hasDiscount && (

@@ -17,8 +17,8 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
   };
 
   return (
-    <footer className="bg-[#09090b] border-t border-gem-border/80 text-slate-400 text-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="bg-[#1c1713] border-t border-[#392d27] text-[#d9cbb9] text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           
           {/* Column 1: Brand Info */}
@@ -30,7 +30,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
               }}
               className="flex items-center space-x-3 cursor-pointer group"
             >
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gem-pink to-gem-deepPink flex items-center justify-center shadow-pink-glow">
+              <div className="w-10 h-10 bg-gradient-to-br from-gem-pink to-gem-deepPink flex items-center justify-center shadow-pink-glow">
                 <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2L2 9l10 13 10-13-10-7zm0 3.2L18.4 9H5.6L12 5.2z"/>
                 </svg>
@@ -45,11 +45,11 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
               </div>
             </div>
 
-            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Kenya’s premier fashion and designer footwear hub. Empowering women and men with confident, high-waisted mom jeans, crop tops, dresses, and footwear.
+            <p className="text-[#d9cbb9] text-xs leading-relaxed max-w-sm">
+              Curated clothes and footwear for looks with confidence, colour and presence.
             </p>
 
-            <div className="space-y-2 pt-2 text-slate-300">
+            <div className="space-y-2 pt-2 text-[#f5f0e8]">
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-gem-pink shrink-0" />
                 <span>+254 718 796 296 (Store Concierge)</span>
@@ -67,7 +67,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
 
           {/* Column 2: Women's Collections */}
           <div className="space-y-3">
-            <h4 className="font-serif text-sm font-bold text-white uppercase tracking-wider">
+            <h4 className="font-serif text-sm font-bold text-[#fffaf2] uppercase tracking-wider">
               Women's Apparel
             </h4>
             <ul className="space-y-2">
@@ -88,7 +88,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
 
           {/* Column 3: Men's Collections */}
           <div className="space-y-3">
-            <h4 className="font-serif text-sm font-bold text-white uppercase tracking-wider">
+            <h4 className="font-serif text-sm font-bold text-[#fffaf2] uppercase tracking-wider">
               Men's Apparel
             </h4>
             <ul className="space-y-2">
@@ -103,7 +103,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
 
           {/* Column 4: Quick Links */}
           <div className="space-y-3">
-            <h4 className="font-serif text-sm font-bold text-white uppercase tracking-wider">
+            <h4 className="font-serif text-sm font-bold text-[#fffaf2] uppercase tracking-wider">
               Store Support
             </h4>
             <ul className="space-y-2">
@@ -123,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-gem-border/60 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+        <div className="mt-12 pt-8 border-t border-[#392d27] flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-[#9b897d]">
           <p>© 2026 GEM & CRYSTAL FASHION HUB. All rights reserved.</p>
         </div>
 

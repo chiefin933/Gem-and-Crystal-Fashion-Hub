@@ -21,7 +21,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ setCurrentTab }) => {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_7%_18%,rgba(191,125,41,0.18),transparent_23%),radial-gradient(circle_at_91%_70%,rgba(112,57,37,0.12),transparent_24%)]" />
       <div className="absolute inset-x-0 top-7 -z-10 h-px bg-[#b8782d]/30" />
       <div className="mx-auto grid min-h-[680px] max-w-7xl grid-cols-1 gap-10 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-12 lg:items-center lg:gap-6 lg:px-8 lg:py-16">
-        <div className="relative z-10 order-2 lg:order-1 lg:col-span-6 lg:pr-10">
+        <div className="relative z-10 order-1 lg:order-1 lg:col-span-6 lg:pr-10">
           <div className="mb-7 inline-flex items-center gap-2 border border-[#a4662b]/35 bg-[#fffaf2]/70 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#63391d]"><MapPin className="h-3.5 w-3.5 text-[#b8782d]" aria-hidden="true" />Roysambu, Nairobi</div>
           <h1 className="max-w-3xl font-serif text-[clamp(3.35rem,10vw,7.15rem)] font-bold leading-[0.78] tracking-[-0.065em] text-[#181411]">
             BE BOLD.<br />
@@ -35,7 +35,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ setCurrentTab }) => {
           </div>
           <div className="mt-11 flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.19em] text-[#745d4b]"><span>Curated in Nairobi</span><span className="h-1 w-1 rounded-full bg-[#b8782d]" /><span>New season</span></div>
         </div>
-        <div className="relative order-1 min-h-[425px] sm:min-h-[525px] lg:order-2 lg:col-span-6 lg:min-h-[590px]">
+        <div className="relative order-2 min-h-[425px] sm:min-h-[525px] lg:order-2 lg:col-span-6 lg:min-h-[590px]">
           <div className="absolute right-[4%] top-0 h-[82%] w-[64%] overflow-hidden bg-[#31231d] shadow-[18px_20px_0_rgba(176,106,42,0.18)] sm:right-[8%] sm:w-[58%]"><img src={collectionRack} alt="Curated clothing rack with tailored jackets, dresses and denim" className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105" fetchPriority="high" decoding="async" /><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#17110d]/85 to-transparent px-5 pb-5 pt-16"><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#ffdba8]">The collection edit</p><p className="font-serif text-xl italic text-white">Pieces with presence</p></div></div>
           <figure className="absolute bottom-0 left-0 w-[46%] overflow-hidden border-[6px] border-[#f5f0e8] bg-[#a25c3d] shadow-xl sm:w-[41%]"><img src={footwearEdit} alt="Metallic heels and white sneakers arranged on a studio plinth" className="aspect-[4/5] w-full object-cover object-center" loading="lazy" decoding="async" /><figcaption className="absolute inset-x-0 bottom-0 bg-[#1c1713]/85 px-3 py-2 text-[9px] font-bold uppercase tracking-[0.15em] text-[#fff8ed]">Footwear edit</figcaption></figure>
           <figure className="absolute bottom-[7%] right-0 w-[31%] overflow-hidden border-[5px] border-[#f5f0e8] bg-[#d6b89e] shadow-xl sm:w-[28%]"><img src={tailoredLook} alt="Tailored blazer, trousers and clean white sneakers styled as a complete look" className="aspect-[3/4] w-full object-cover object-center" loading="lazy" decoding="async" /><figcaption className="bg-[#fffaf2] px-2 py-2 text-center text-[8px] font-bold uppercase tracking-[0.12em] text-[#6a4325]">Complete looks</figcaption></figure>

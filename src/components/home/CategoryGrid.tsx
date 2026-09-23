@@ -33,7 +33,7 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({ setCurrentTab }) => 
     : CATEGORIES.filter(c => c.gender === activeGender || c.gender === 'unisex');
 
   return (
-    <section className="py-16 bg-[#09090b] border-b border-gem-border/40">
+    <section className="py-16 bg-[#f5f0e8] border-b border-[#d9cbb9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -43,19 +43,19 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({ setCurrentTab }) => 
               <Tag className="w-3.5 h-3.5 text-gem-pink" />
               <span>SHOP BY DEPARTMENT & CATEGORY</span>
             </div>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#181411]">
               EXPLORE COLLECTIONS
             </h2>
           </div>
 
           {/* Department Gender Selector Buttons */}
-          <div className="grid w-full md:w-auto grid-cols-3 gap-1 p-1.5 bg-[#121215] rounded-xl border border-gem-border">
+          <div className="grid w-full md:w-auto grid-cols-3 gap-1 p-1.5 bg-[#fffaf2] border border-[#d9cbb9]">
             <button
               onClick={() => setActiveGender('all')}
               className={`min-w-0 px-2 sm:px-4 py-2 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-normal sm:tracking-wider transition-all ${
                 activeGender === 'all'
                   ? 'bg-gem-pink text-white shadow-pink-glow'
-                  : 'text-slate-400 hover:text-white'
+                  : 'text-[#5e5147] hover:text-[#181411]'
               }`}
             >
               All Categories
@@ -65,7 +65,7 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({ setCurrentTab }) => 
               className={`min-w-0 px-2 sm:px-4 py-2 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-normal sm:tracking-wider transition-all ${
                 activeGender === 'women'
                   ? 'bg-gem-pink text-white shadow-pink-glow'
-                  : 'text-slate-400 hover:text-white'
+                  : 'text-[#5e5147] hover:text-[#181411]'
               }`}
             >
               Women's Hub
@@ -75,7 +75,7 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({ setCurrentTab }) => 
               className={`min-w-0 px-2 sm:px-4 py-2 rounded-lg text-[10px] sm:text-xs font-bold uppercase tracking-normal sm:tracking-wider transition-all ${
                 activeGender === 'men'
                   ? 'bg-gem-pink text-white shadow-pink-glow'
-                  : 'text-slate-400 hover:text-white'
+                  : 'text-[#5e5147] hover:text-[#181411]'
               }`}
             >
               Men's Hub
@@ -89,7 +89,7 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({ setCurrentTab }) => 
             <div
               key={cat.id}
               onClick={() => handleCategoryClick(cat.name, cat.gender)}
-              className="group relative rounded-2xl overflow-hidden aspect-[4/5] crystal-card cursor-pointer border border-gem-border/60 hover:border-gem-pink/60 transition-all duration-300 shadow-xl"
+              className="group relative overflow-hidden aspect-[4/5] bg-[#fffaf2] cursor-pointer border border-[#d9cbb9] hover:border-gem-pink transition-all duration-300 shadow-[0_14px_35px_-26px_rgba(28,23,19,.7)]"
             >
               {cat.image ? (
                 <img
@@ -102,34 +102,30 @@ export const CategoryGrid: React.FC<CategoryGridProps> = ({ setCurrentTab }) => 
               ) : (
                 <div
                   className={`w-full h-full flex items-end pb-24 justify-center transition-transform duration-700 group-hover:scale-105 ${
-                    cat.gender === 'men'
-                      ? 'bg-gradient-to-tr from-zinc-950 via-blue-950/50 to-zinc-900'
-                      : 'bg-gradient-to-tr from-zinc-950 via-rose-950/50 to-zinc-900'
+                    'bg-gradient-to-tr from-[#1c1713] via-[#5e5147] to-gem-pink'
                   }`}
                 >
                   <span
-                    className={`font-serif font-black text-[5rem] leading-none select-none opacity-20 ${
-                      cat.gender === 'men' ? 'text-blue-400' : 'text-rose-400'
-                    }`}
+                    className="font-serif font-black text-[5rem] leading-none select-none opacity-20 text-[#f4c99e]"
                   >
                     {cat.name.charAt(0)}
                   </span>
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1c1713] via-[#1c1713]/35 to-transparent" />
 
               <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-end">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-gem-pink mb-1">
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#ffb5d0] mb-1">
                   {cat.gender === 'women' ? "Women's Fashion" : cat.gender === 'men' ? "Men's Fashion" : 'Unisex Collection'}
                 </span>
-                <h3 className="font-serif text-2xl font-bold text-white group-hover:text-gem-pink transition-colors">
+                <h3 className="font-serif text-2xl font-bold text-white group-hover:text-[#ffb5d0] transition-colors">
                   {cat.name}
                 </h3>
                 <p className="text-[11px] text-slate-300 font-light line-clamp-2 mt-1 mb-4">
                   {cat.description}
                 </p>
 
-                <div className="flex items-center justify-between text-xs font-bold text-white group-hover:text-gem-pink transition-colors pt-3 border-t border-gem-border/40">
+                <div className="flex items-center justify-between text-xs font-bold text-white group-hover:text-[#ffb5d0] transition-colors pt-3 border-t border-[#fffaf2]/30">
                   <span>Browse Collection</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>

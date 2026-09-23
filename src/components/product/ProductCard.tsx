@@ -45,10 +45,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
   return (
     <div
       onClick={() => onSelect(product)}
-      className="group relative crystal-card rounded-xl overflow-hidden flex flex-col cursor-pointer transition-all duration-300"
+      className="group relative bg-[#fffaf2] border border-[#d9cbb9] overflow-hidden flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_35px_-24px_rgba(28,23,19,.65)]"
     >
       {/* Image Container */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-[#121215]">
+      <div className="relative aspect-[3/4] overflow-hidden bg-[#eee5d7]">
         <img
           key={cardImage}
           src={cardImage}
@@ -79,7 +79,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
         <button
           onClick={(e) => { e.stopPropagation(); toggleWishlist(product.id); }}
           aria-label="Wishlist toggle"
-          className="absolute top-3 right-3 p-2 rounded-full bg-[#09090b]/70 backdrop-blur-md text-slate-300 hover:text-gem-pink hover:bg-black transition-all z-10"
+          className="absolute top-3 right-3 p-2 bg-[#fffaf2]/90 text-[#5e5147] hover:text-gem-pink transition-all z-10"
         >
           <Heart className={`w-4 h-4 ${isWished ? 'fill-gem-pink text-gem-pink' : ''}`} />
         </button>
@@ -88,7 +88,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
         <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-10">
           <button
             onClick={(e) => { e.stopPropagation(); setQuickViewProduct(product); }}
-            className="flex-1 py-2 px-3 bg-[#09090b]/90 backdrop-blur-md hover:bg-gem-pink text-white text-xs font-semibold rounded-md flex items-center justify-center space-x-1.5 border border-gem-border transition-colors"
+            className="flex-1 py-2 px-3 bg-[#1c1713]/95 hover:bg-gem-pink text-white text-xs font-semibold flex items-center justify-center space-x-1.5 transition-colors"
           >
             <Eye className="w-3.5 h-3.5" />
             <span>Quick View</span>
@@ -96,7 +96,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
           <button
             onClick={handleQuickAdd}
             disabled={totalStock <= 0}
-            className="p-2 bg-gem-pink hover:bg-gem-magenta text-white rounded-md disabled:bg-slate-700 disabled:cursor-not-allowed shadow-pink-glow"
+            className="p-2 bg-gem-pink hover:bg-gem-deepPink text-white disabled:bg-slate-400 disabled:cursor-not-allowed"
             title="Quick Add to Cart"
           >
             <ShoppingBag className="w-4 h-4" />
@@ -105,12 +105,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
       </div>
 
       {/* Details Section */}
-      <div className="p-4 flex flex-col flex-1 justify-between">
+      <div className="p-4 flex flex-col flex-1 justify-between text-[#181411]">
         <div>
           <span className="text-[10px] font-bold uppercase text-gem-pink tracking-wider block mb-1">
             {product.category}
           </span>
-          <h3 className="font-serif text-base font-bold text-white group-hover:text-gem-pink transition-colors line-clamp-1">
+          <h3 className="font-serif text-lg font-bold text-[#181411] group-hover:text-gem-pink transition-colors line-clamp-1">
             {product.title}
           </h3>
 
@@ -124,14 +124,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
                   title={c.name}
                   className={`w-4 h-4 rounded-full border-2 transition-all duration-200 hover:scale-125 ${
                     activeColorIdx === idx
-                      ? 'border-gem-pink scale-110 shadow-[0_0_6px_rgba(236,72,153,0.7)]'
-                      : 'border-gem-border hover:border-slate-400'
+                    ? 'border-gem-pink scale-110 shadow-[0_0_6px_rgba(217,47,110,0.35)]'
+                      : 'border-[#d9cbb9] hover:border-[#5e5147]'
                   }`}
                   style={{ backgroundColor: c.hex }}
                 />
               ))}
               {product.colors.length > 1 && (
-                <span className="text-[10px] text-slate-500 ml-1 truncate max-w-[80px]">
+                <span className="text-[10px] text-[#5e5147] ml-1 truncate max-w-[80px]">
                   {product.colors[activeColorIdx]?.name}
                 </span>
               )}
@@ -140,9 +140,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
         </div>
 
         {/* Pricing & Stock */}
-        <div className="mt-4 pt-3 border-t border-gem-border/50 flex items-center justify-between">
+        <div className="mt-4 pt-3 border-t border-[#d9cbb9] flex items-center justify-between">
           <div className="flex items-baseline space-x-2">
-            <span className="text-sm font-extrabold text-white font-sans">
+            <span className="text-sm font-extrabold text-[#181411] font-sans">
               KSh {displayPrice.toLocaleString()}
             </span>
             {hasDiscount && (

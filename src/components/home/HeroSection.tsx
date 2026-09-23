@@ -1,130 +1,46 @@
 import React from 'react';
 import { ArrowRight, MapPin } from 'lucide-react';
-import { HERO_REAL_IMAGE } from '../../utils/demoData';
+import collectionRack from '../../assets/hero-collection-rack.jpg';
+import footwearEdit from '../../assets/hero-footwear-edit.jpg';
+import tailoredLook from '../../assets/hero-tailored-look.jpg';
 import { useStore } from '../../context/useStore';
 import { FilterState } from '../../types/ecommerce';
 
-interface HeroSectionProps {
-  setCurrentTab: (tab: string) => void;
-}
+interface HeroSectionProps { setCurrentTab: (tab: string) => void; }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ setCurrentTab }) => {
   const { setFilters } = useStore();
-
   const handleNavDepartment = (gender: 'women' | 'men') => {
-    setFilters((prev: FilterState) => ({
-      ...prev,
-      gender,
-      category: 'All',
-      searchQuery: '',
-    }));
+    setFilters((prev: FilterState) => ({ ...prev, gender, category: 'All', searchQuery: '' }));
     setCurrentTab(gender === 'women' ? 'women-page' : 'men-page');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <section className="relative bg-[#09090b] overflow-hidden lg:min-h-[640px] flex items-center border-b border-gem-border/50">
-      
-      {/* Background Pink & Blue Ambient Glow */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gem-pink/20 rounded-full blur-[120px] pointer-events-none animate-pulse-glow" />
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-blue-600/15 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-9 sm:py-12 lg:py-16 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          
-          {/* Left Text & Headline Column */}
-          <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-center lg:text-left">
-            <div className="inline-flex max-w-full items-center gap-2 px-3 py-1.5 rounded-full bg-gem-pink/15 border border-gem-pink/40 text-[10px] sm:text-xs font-bold text-gem-lightPink uppercase tracking-[0.12em] sm:tracking-widest">
-              <MapPin className="w-3.5 h-3.5 text-gem-pink" />
-              <span>ROYSAMBU BOUTIQUE HUB</span>
-            </div>
-
-            <h1 className="font-serif text-[clamp(2.75rem,14vw,4.5rem)] lg:text-7xl font-bold tracking-tight text-white leading-[0.95] sm:leading-[1.05]">
-              BE <span className="text-gem-pink pink-glow-text">BOLD.</span><br />
-              BE <span className="text-gem-pink pink-glow-text">BRIGHT.</span><br />
-              BE <span className="text-white">YOU.</span>
-            </h1>
-
-            <p className="text-slate-300 text-sm sm:text-base lg:text-lg max-w-xl font-light leading-relaxed">
-              Explore high-waisted mom jeans, crop tops, dresses, blazers, sneakers, Chelsea boots, and menswear. Built for maximum confidence and style.
-            </p>
-
-            {/* LC Waikiki Style Department Selectors */}
-            <div className="flex flex-col min-[420px]:flex-row items-stretch min-[420px]:items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
-              <button
-                onClick={() => handleNavDepartment('women')}
-                className="w-full min-[420px]:w-auto px-6 sm:px-9 py-3.5 sm:py-4.5 bg-gem-pink hover:bg-gem-magenta text-white font-extrabold text-xs tracking-widest uppercase rounded-xl shadow-pink-glow hover:shadow-pink-glow-lg transition-all duration-300 flex items-center justify-center space-x-2 group"
-              >
-                <span>WOMEN'S HUB</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-
-              <button
-                onClick={() => handleNavDepartment('men')}
-                className="w-full min-[420px]:w-auto px-6 sm:px-9 py-3.5 sm:py-4.5 bg-[#141419] hover:bg-blue-600 border border-gem-border hover:border-blue-500 text-slate-200 hover:text-white font-extrabold text-xs tracking-widest uppercase rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 group"
-              >
-                <span>MEN'S HUB</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
+    <section className="relative isolate overflow-hidden border-b border-[#241d18] bg-[#f5f0e8] text-[#181411]">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_7%_18%,rgba(191,125,41,0.18),transparent_23%),radial-gradient(circle_at_91%_70%,rgba(112,57,37,0.12),transparent_24%)]" />
+      <div className="absolute inset-x-0 top-7 -z-10 h-px bg-[#b8782d]/30" />
+      <div className="mx-auto grid min-h-[680px] max-w-7xl grid-cols-1 gap-10 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-12 lg:items-center lg:gap-6 lg:px-8 lg:py-16">
+        <div className="relative z-10 order-2 lg:order-1 lg:col-span-6 lg:pr-10">
+          <div className="mb-7 inline-flex items-center gap-2 border border-[#a4662b]/35 bg-[#fffaf2]/70 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-[#63391d]"><MapPin className="h-3.5 w-3.5 text-[#b8782d]" aria-hidden="true" />Roysambu, Nairobi</div>
+          <h1 className="max-w-3xl font-serif text-[clamp(3.35rem,10vw,7.15rem)] font-bold leading-[0.78] tracking-[-0.065em] text-[#181411]">
+            BE BOLD.<br />
+            <span className="text-[#ad6729] italic">BE BRIGHT.</span><br />
+            BE YOU.
+          </h1>
+          <p className="mt-8 max-w-lg border-l-2 border-[#b8782d] pl-4 text-sm leading-7 text-[#5e5147] sm:text-base">Explore high-waisted mommy jeans, crop tops, dresses, blazers, sneakers, Chelsea boots, and menswear. Built for maximum confidence and style.</p>
+          <div className="mt-9 flex flex-col gap-3 min-[440px]:flex-row">
+            <button onClick={() => handleNavDepartment('women')} className="group inline-flex min-h-12 items-center justify-center gap-3 bg-gem-pink px-6 py-3 text-xs font-extrabold uppercase tracking-[0.15em] text-[#fffaf2] transition-colors duration-300 hover:bg-gem-deepPink focus:outline-none focus:ring-2 focus:ring-gem-pink focus:ring-offset-2">Shop women <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" /></button>
+            <button onClick={() => handleNavDepartment('men')} className="group inline-flex min-h-12 items-center justify-center gap-3 border border-[#332b25] bg-transparent px-6 py-3 text-xs font-extrabold uppercase tracking-[0.15em] text-[#332b25] transition-colors duration-300 hover:border-gem-pink hover:bg-gem-pink hover:text-white focus:outline-none focus:ring-2 focus:ring-gem-pink focus:ring-offset-2">Shop men <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" /></button>
           </div>
-
-          {/* Right Image Feature Column */}
-          <div className="lg:col-span-5 relative flex justify-center">
-            <div className="relative w-full max-w-[440px] lg:max-w-none aspect-[5/6] sm:aspect-[4/5] max-h-[470px] lg:max-h-none rounded-2xl overflow-hidden border border-gem-pink/40 shadow-2xl group bg-[#121215]">
-              {HERO_REAL_IMAGE ? (
-                <img
-                  src={HERO_REAL_IMAGE}
-                  alt="Gem & Crystal Fashion Model"
-                  className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
-                  fetchPriority="high"
-                  decoding="async"
-                />
-              ) : (
-                <div className="w-full h-full bg-gradient-to-tr from-zinc-950 via-rose-950/40 to-zinc-900 flex flex-col items-center justify-center p-8 text-center">
-                  {/* Decorative gem icon */}
-                  <div className="w-20 h-20 rounded-2xl bg-gem-pink/20 border border-gem-pink/40 flex items-center justify-center mb-5 shadow-pink-glow">
-                    <svg className="w-10 h-10 text-gem-pink" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2L2 9l10 13 10-13-10-7zm0 3.2L18.4 9H5.6L12 5.2z"/>
-                    </svg>
-                  </div>
-                  <h3 className="font-serif text-3xl font-bold text-white mb-2 tracking-wide">Gem & Crystal</h3>
-                  <p className="text-xs text-gem-pink font-semibold uppercase tracking-[0.2em] mb-3">Fashion Hub</p>
-                  <p className="text-xs text-zinc-400 max-w-[200px] leading-relaxed">Physical Boutique & Online Store<br />Roysambu, Nairobi 🇰🇪</p>
-                  {/* Decorative divider */}
-                  <div className="mt-6 w-16 h-px bg-gradient-to-r from-transparent via-gem-pink to-transparent" />
-                  <p className="mt-4 text-[10px] text-zinc-500 uppercase tracking-widest">BE BOLD. BE BRIGHT. BE YOU.</p>
-                </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-85 pointer-events-none" />
-              
-              <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 p-3 sm:p-4 rounded-xl glass-panel border border-gem-pink/30 flex flex-col gap-3">
-                <div>
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-gem-pink block">
-                    Fashion & Footwear
-                  </span>
-                  <span className="font-serif text-base sm:text-lg font-bold text-white block">
-                    Select Your Department
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => handleNavDepartment('women')}
-                    className="px-3.5 py-2 bg-gem-pink text-white text-xs font-bold rounded-lg hover:bg-gem-magenta transition-colors shadow-pink-glow"
-                  >
-                    Women
-                  </button>
-                  <button
-                    onClick={() => handleNavDepartment('men')}
-                    className="px-3.5 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-500 transition-colors shadow-lg"
-                  >
-                    Men
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
+          <div className="mt-11 flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.19em] text-[#745d4b]"><span>Curated in Nairobi</span><span className="h-1 w-1 rounded-full bg-[#b8782d]" /><span>New season</span></div>
+        </div>
+        <div className="relative order-1 min-h-[425px] sm:min-h-[525px] lg:order-2 lg:col-span-6 lg:min-h-[590px]">
+          <div className="absolute right-[4%] top-0 h-[82%] w-[64%] overflow-hidden bg-[#31231d] shadow-[18px_20px_0_rgba(176,106,42,0.18)] sm:right-[8%] sm:w-[58%]"><img src={collectionRack} alt="Curated clothing rack with tailored jackets, dresses and denim" className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105" fetchPriority="high" decoding="async" /><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#17110d]/85 to-transparent px-5 pb-5 pt-16"><p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#ffdba8]">The collection edit</p><p className="font-serif text-xl italic text-white">Pieces with presence</p></div></div>
+          <figure className="absolute bottom-0 left-0 w-[46%] overflow-hidden border-[6px] border-[#f5f0e8] bg-[#a25c3d] shadow-xl sm:w-[41%]"><img src={footwearEdit} alt="Metallic heels and white sneakers arranged on a studio plinth" className="aspect-[4/5] w-full object-cover object-center" loading="lazy" decoding="async" /><figcaption className="absolute inset-x-0 bottom-0 bg-[#1c1713]/85 px-3 py-2 text-[9px] font-bold uppercase tracking-[0.15em] text-[#fff8ed]">Footwear edit</figcaption></figure>
+          <figure className="absolute bottom-[7%] right-0 w-[31%] overflow-hidden border-[5px] border-[#f5f0e8] bg-[#d6b89e] shadow-xl sm:w-[28%]"><img src={tailoredLook} alt="Tailored blazer, trousers and clean white sneakers styled as a complete look" className="aspect-[3/4] w-full object-cover object-center" loading="lazy" decoding="async" /><figcaption className="bg-[#fffaf2] px-2 py-2 text-center text-[8px] font-bold uppercase tracking-[0.12em] text-[#6a4325]">Complete looks</figcaption></figure>
+          <div className="absolute left-[50%] top-[7%] h-16 w-16 -translate-x-1/2 border border-[#b8782d]/70 sm:h-20 sm:w-20" aria-hidden="true" />
+          <p className="absolute right-0 top-[12%] origin-bottom-right rotate-90 text-[9px] font-bold uppercase tracking-[0.27em] text-[#8c5e37] sm:text-[10px]">Gem &amp; Crystal / Fashion Hub</p>
         </div>
       </div>
     </section>

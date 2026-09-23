@@ -23,7 +23,7 @@ export const WhatsAppButton: React.FC = () => {
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white p-3.5 rounded-full shadow-2xl shadow-emerald-600/40 flex items-center gap-2 font-bold text-xs uppercase tracking-wider transition-all transform hover:scale-105 active:scale-95 group border border-emerald-400/30"
+      className="fixed bottom-6 right-6 z-40 max-sm:hidden bg-[#1c1713] hover:bg-gem-pink text-white p-3.5 rounded-full shadow-2xl shadow-[#1c1713]/30 flex items-center gap-2 font-bold text-xs uppercase tracking-wider transition-all transform hover:scale-105 active:scale-95 group border border-[#d9cbb9]/50"
       title="Chat with Gem & Crystal on WhatsApp"
     >
       <MessageCircle className="w-5 h-5 fill-current shrink-0" />

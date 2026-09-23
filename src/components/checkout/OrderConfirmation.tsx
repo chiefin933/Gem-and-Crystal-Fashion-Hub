@@ -12,7 +12,7 @@ export const OrderConfirmation: React.FC<OrderConfirmationProps> = ({
   onContinueShopping,
 }) => {
   return (
-    <div className="py-16 bg-[#09090b]">
+    <div className="shopping-surface shopping-confirmation py-16 bg-[#09090b]">
       <div className="max-w-3xl mx-auto px-4">
         
         {/* Receipt Container */}

@@ -63,7 +63,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       />
 
       {/* Drawer Panel */}
-      <div className="relative w-full max-w-md bg-[#09090b] border-l border-gem-border h-full flex flex-col z-10 shadow-2xl">
+      <div className="shopping-surface shopping-drawer relative w-full max-w-md bg-[#09090b] border-l border-gem-border h-full flex flex-col z-10 shadow-2xl">
         
         {/* Drawer Header */}
         <div className="p-6 border-b border-gem-border flex items-center justify-between">

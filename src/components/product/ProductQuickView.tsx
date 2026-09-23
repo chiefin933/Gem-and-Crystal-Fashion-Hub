@@ -37,7 +37,7 @@ const ProductQuickViewContent: React.FC<{ quickViewProduct: Product }> = ({ quic
       />
 
       {/* Modal Box */}
-      <div className="relative w-full max-w-4xl bg-[#09090b] border border-gem-pink/40 rounded-2xl overflow-hidden shadow-2xl z-10 grid grid-cols-1 md:grid-cols-2 max-h-[90vh] overflow-y-auto">
+      <div className="shopping-surface shopping-modal relative w-full max-w-4xl bg-[#09090b] border border-gem-pink/40 rounded-2xl overflow-hidden shadow-2xl z-10 grid grid-cols-1 md:grid-cols-2 max-h-[90vh] overflow-y-auto">
         
         {/* Close Button */}
         <button

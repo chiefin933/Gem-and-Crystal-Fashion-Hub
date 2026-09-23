@@ -129,7 +129,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       <div className="fixed inset-0 bg-black/85 backdrop-blur-md" onClick={onClose} />
 
       {/* Modal Box */}
-      <div className="relative w-full max-w-2xl bg-[#09090b] border border-gem-pink/40 rounded-2xl overflow-hidden shadow-2xl z-10 p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+      <div className="shopping-surface shopping-checkout relative w-full max-w-2xl bg-[#09090b] border border-gem-pink/40 rounded-2xl overflow-hidden shadow-2xl z-10 p-6 md:p-8 max-h-[90vh] overflow-y-auto">
         
         {/* Close Button */}
         <button

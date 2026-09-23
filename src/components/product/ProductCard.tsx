@@ -140,7 +140,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
         </div>
 
         {/* Pricing & Stock */}
-        <div className="mt-4 pt-3 border-t border-[#d9cbb9] flex items-center justify-between">
+        <div className="mt-4 pt-3 border-t border-[#d9cbb9] grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
           <div className="flex items-baseline space-x-2">
             <span className="text-base font-extrabold text-[#181411] font-sans">
               KSh {displayPrice.toLocaleString()}
@@ -151,12 +151,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onSelect }) =
               </span>
             )}
           </div>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+          <span className={`justify-self-start sm:justify-self-end text-[11px] font-semibold px-2.5 py-1 border ${
             totalStock > 5
-              ? 'text-emerald-400 bg-emerald-950/40 border border-emerald-800/40'
+              ? 'text-[#31523b] bg-[#e4f0e6] border-[#b8d4be]'
               : totalStock > 0
-              ? 'text-amber-400 bg-amber-950/40 border border-amber-800/40'
-              : 'text-rose-400 bg-rose-950/40 border border-rose-800/40'
+              ? 'text-[#6e4924] bg-[#f6ead7] border-[#e3cda9]'
+              : 'text-[#7f2947] bg-[#f9e1ea] border-[#e9b8cb]'
           }`}>
             {totalStock > 5 ? 'In Stock' : totalStock > 0 ? `${totalStock} Left` : 'Sold Out'}
           </span>

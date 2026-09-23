@@ -22,7 +22,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   return (
-    <section className="py-10 bg-[#09090b]">
+    <section className="shopping-surface shopping-catalogue py-10 bg-[#09090b]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Bar */}

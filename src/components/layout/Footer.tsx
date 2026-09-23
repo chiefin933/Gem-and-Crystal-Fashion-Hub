@@ -1,11 +1,14 @@
 import React from 'react';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { ChevronDown, Phone, Mail, MapPin } from 'lucide-react';
 import { useStore } from '../../context/useStore';
 import { FilterState } from '../../types/ecommerce';
 
 interface FooterProps {
   setCurrentTab: (tab: string) => void;
 }
+
+const womenLinks = ['Dresses', 'Two piece (skirt/trouser)', 'Three piece', 'Mommy jeans', 'Straight jeans', 'Hoodies', 'Leather jackets', 'Crop jackets', 'Trench coats', 'Heels', 'Sneakers', 'Torte Bags'];
+const menLinks = ['Straight jeans', 'Hoodies', 'Leather jackets', 'Crop jackets', 'Trench coats', 'Sneakers'];
 
 export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
   const { setFilters } = useStore();
@@ -15,6 +18,15 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
     setCurrentTab('shop');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const LinkList = ({ links, gender }: { links: string[]; gender: 'women' | 'men' }) => (
+    <ul className="space-y-2 pt-3">
+      {links.map((link) => (
+        <li key={link}><button onClick={() => handleNavCategory(link, gender)} className="text-left hover:text-gem-pink focus-visible:outline focus-visible:outline-2 focus-visible:outline-gem-pink">{link === 'Two piece (skirt/trouser)' ? 'Two Piece Sets' : link}</button></li>
+      ))}
+    </ul>
+  );
+  const SupportLinks = () => <ul className="space-y-2 pt-3"><li><button onClick={() => setCurrentTab('about-us')} className="hover:text-gem-pink">About Gem & Crystal</button></li><li><button onClick={() => setCurrentTab('contact-us')} className="hover:text-gem-pink">Contact boutique concierge</button></li></ul>;
 
   return (
     <footer className="bg-[#1c1713] border-t border-[#392d27] text-[#d9cbb9] text-xs">
@@ -66,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
           </div>
 
           {/* Column 2: Women's Collections */}
-          <div className="space-y-3">
+          <div className="hidden md:block space-y-3">
             <h4 className="font-serif text-sm font-bold text-[#fffaf2] uppercase tracking-wider">
               Women's Apparel
             </h4>
@@ -87,7 +99,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
           </div>
 
           {/* Column 3: Men's Collections */}
-          <div className="space-y-3">
+          <div className="hidden md:block space-y-3">
             <h4 className="font-serif text-sm font-bold text-[#fffaf2] uppercase tracking-wider">
               Men's Apparel
             </h4>
@@ -102,7 +114,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
           </div>
 
           {/* Column 4: Quick Links */}
-          <div className="space-y-3">
+          <div className="hidden md:block space-y-3">
             <h4 className="font-serif text-sm font-bold text-[#fffaf2] uppercase tracking-wider">
               Store Support
             </h4>
@@ -120,6 +132,11 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab }) => {
             </ul>
           </div>
 
+          <div className="md:hidden border-t border-[#392d27] divide-y divide-[#392d27]">
+            <details className="group py-1"><summary className="flex cursor-pointer list-none items-center justify-between py-4 font-serif text-base font-bold text-[#fffaf2]">Women’s Apparel <ChevronDown className="h-4 w-4 text-gem-pink transition-transform group-open:rotate-180" /></summary><LinkList links={womenLinks} gender="women" /></details>
+            <details className="group py-1"><summary className="flex cursor-pointer list-none items-center justify-between py-4 font-serif text-base font-bold text-[#fffaf2]">Men’s Apparel <ChevronDown className="h-4 w-4 text-gem-pink transition-transform group-open:rotate-180" /></summary><LinkList links={menLinks} gender="men" /></details>
+            <details className="group py-1"><summary className="flex cursor-pointer list-none items-center justify-between py-4 font-serif text-base font-bold text-[#fffaf2]">Store Support <ChevronDown className="h-4 w-4 text-gem-pink transition-transform group-open:rotate-180" /></summary><SupportLinks /></details>
+          </div>
         </div>
 
         {/* Bottom Bar */}

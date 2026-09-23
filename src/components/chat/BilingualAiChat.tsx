@@ -99,7 +99,7 @@ export const BilingualAiChat: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 left-6 z-50 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white p-3.5 rounded-full shadow-2xl shadow-rose-600/40 flex items-center gap-2 border border-rose-400/30 transition-all transform hover:scale-105 active:scale-95 group"
+          className="fixed bottom-6 left-6 z-50 max-sm:hidden bg-gem-pink hover:bg-gem-deepPink text-white p-3.5 rounded-full shadow-2xl shadow-gem-pink/40 flex items-center gap-2 border border-pink-300/50 transition-all transform hover:scale-105 active:scale-95 group"
         >
           <Bot className="w-5 h-5 shrink-0" />
           <span className="text-[11px] font-bold uppercase tracking-wider pr-1 hidden sm:inline">

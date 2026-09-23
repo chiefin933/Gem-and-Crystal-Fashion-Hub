@@ -82,6 +82,125 @@ h1, h2, h3, .font-serif {
 .boutique-label { color: var(--brand-pink); font-size: .68rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
 .boutique-button { background: var(--brand-pink); color: #fffaf2; border: 1px solid var(--brand-pink); }
 .boutique-button:hover { background: var(--brand-pink-deep); border-color: var(--brand-pink-deep); }
+
+/* Shopping journey: one calm, tactile retail system from catalogue to receipt.
+   Components retain their existing interaction markup; this layer turns the
+   former dark utility treatment into the same boutique paper palette used by
+   the editorial storefront. */
+.shopping-surface {
+  --shop-paper: #fffaf2;
+  --shop-soft: #f5eee4;
+  --shop-ink: #241b16;
+  --shop-muted: #6b5b50;
+  --shop-line: #dacbbb;
+  --shop-pink: #d92f6e;
+  --shop-pink-deep: #ad1f53;
+  --shop-success: #2f6b4a;
+  background: var(--canvas) !important;
+  color: var(--shop-ink) !important;
+}
+.shopping-surface .text-white,
+.shopping-surface .text-slate-200,
+.shopping-surface .text-slate-300 { color: var(--shop-ink) !important; }
+.shopping-surface .text-slate-400,
+.shopping-surface .text-slate-500,
+.shopping-surface .text-zinc-400 { color: var(--shop-muted) !important; }
+.shopping-surface .border-gem-border,
+.shopping-surface .border-gem-border\/60,
+.shopping-surface .border-gem-border\/80,
+.shopping-surface .border-gem-border\/50 { border-color: var(--shop-line) !important; }
+.shopping-surface .bg-\[\#09090b\],
+.shopping-surface .bg-\[\#0e0e11\],
+.shopping-surface .bg-\[\#121215\],
+.shopping-surface .bg-\[\#141419\],
+.shopping-surface .bg-\[\#18181b\],
+.shopping-surface .bg-\[\#18181f\] { background-color: var(--shop-paper) !important; }
+.shopping-surface .bg-black { background-color: #eadfce !important; }
+.shopping-surface .bg-gem-pink { background-color: var(--shop-pink) !important; }
+.shopping-surface .hover\:bg-gem-magenta:hover,
+.shopping-surface .hover\:bg-gem-pink:hover { background-color: var(--shop-pink-deep) !important; }
+.shopping-surface .text-gem-pink { color: var(--shop-pink) !important; }
+.shopping-surface .border-gem-pink { border-color: var(--shop-pink) !important; }
+.shopping-surface .shadow-pink-glow { box-shadow: 0 12px 22px -14px rgba(173,31,83,.55) !important; }
+.shopping-surface input,
+.shopping-surface select,
+.shopping-surface textarea {
+  background: #fffdf8 !important;
+  color: var(--shop-ink) !important;
+  border-color: var(--shop-line) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+.shopping-surface input::placeholder,
+.shopping-surface textarea::placeholder { color: #98887d !important; }
+.shopping-surface input:focus,
+.shopping-surface select:focus,
+.shopping-surface textarea:focus { border-color: var(--shop-pink) !important; outline: 2px solid rgba(217,47,110,.16) !important; outline-offset: 1px; }
+.shopping-surface button:focus-visible { outline: 3px solid rgba(217,47,110,.45); outline-offset: 3px; }
+.shopping-surface .rounded-xl { border-radius: .8rem; }
+.shopping-surface .rounded-2xl { border-radius: 1rem; }
+
+.shopping-catalogue { background: linear-gradient(180deg, #f9f4ec 0, var(--canvas) 14rem) !important; }
+.shopping-catalogue > div > .flex { border-color: var(--shop-line) !important; }
+.shopping-catalogue h1 { color: var(--shop-ink) !important; letter-spacing: -.035em; }
+.shopping-catalogue select { min-height: 2.5rem; }
+.shopping-catalogue .crystal-card { background: var(--shop-paper) !important; border-color: var(--shop-line) !important; box-shadow: 0 12px 28px -26px rgba(36,27,22,.7); }
+.shopping-catalogue .crystal-card:hover { transform: none; box-shadow: 0 12px 28px -26px rgba(36,27,22,.7); }
+
+.shopping-filters { background: transparent !important; }
+.shopping-filters label { color: var(--shop-ink) !important; font-size: .67rem; letter-spacing: .12em; }
+.shopping-filters button:not(.bg-gem-pink) { color: var(--shop-muted); }
+.shopping-filters button:hover { color: var(--shop-ink) !important; background-color: #f6ede2 !important; }
+.shopping-filters .bg-gem-pink\/20 { background: #fae2ec !important; }
+
+.shopping-detail { background: linear-gradient(180deg, #f9f4ec, var(--canvas) 28rem) !important; }
+.shopping-detail h1,
+.shopping-detail h2 { color: var(--shop-ink) !important; }
+.shopping-detail .bg-black\/70 { background: rgba(36,27,22,.76) !important; }
+.shopping-detail .bg-emerald-950\/30 { background: #e6f0e8 !important; }
+.shopping-detail .text-emerald-400 { color: var(--shop-success) !important; }
+.shopping-detail .border-emerald-700\/60 { border-color: #b7d0bd !important; }
+.shopping-detail .bg-\[\#141419\]:hover { background: #f7e6ed !important; }
+.shopping-detail .hover\:text-white:hover { color: var(--shop-ink) !important; }
+
+.shopping-modal,
+.shopping-checkout { background: var(--shop-paper) !important; border-color: var(--shop-line) !important; box-shadow: 0 25px 70px rgba(36,27,22,.24) !important; }
+.shopping-modal > div:first-of-type { background: #f3eade !important; border-color: var(--shop-line) !important; }
+.shopping-modal h2,
+.shopping-checkout h2,
+.shopping-checkout h3 { color: var(--shop-ink) !important; }
+.shopping-modal .bg-black\/60 { background: rgba(36,27,22,.72) !important; }
+
+.shopping-drawer { background: var(--shop-paper) !important; border-color: var(--shop-line) !important; box-shadow: -18px 0 48px rgba(36,27,22,.2) !important; }
+.shopping-drawer .bg-emerald-950\/40 { background: #e6f0e8 !important; border-color: #b7d0bd !important; }
+.shopping-drawer .text-emerald-400 { color: var(--shop-success) !important; }
+.shopping-drawer .text-amber-300 { color: #8c551f !important; }
+.shopping-drawer .hover\:bg-\[\#121215\]:hover { background: #f7e6ed !important; }
+
+.shopping-checkout .bg-amber-950\/40 { background: #fbefda !important; border-color: #e4c58f !important; color: #624119 !important; }
+.shopping-checkout .text-amber-200 { color: #624119 !important; }
+.shopping-checkout .bg-emerald-950\/30 { background: #e8f1e9 !important; }
+.shopping-checkout .border-emerald-500,
+.shopping-checkout .border-emerald-700\/60,
+.shopping-checkout .border-emerald-800\/60 { border-color: #a9c9b0 !important; }
+.shopping-checkout .text-emerald-400,
+.shopping-checkout .text-emerald-300 { color: var(--shop-success) !important; }
+.shopping-checkout .bg-emerald-600,
+.shopping-checkout .hover\:bg-emerald-500:hover { background: var(--shop-success) !important; }
+.shopping-checkout .bg-zinc-900 { background: #f5eee4 !important; border-color: var(--shop-line) !important; }
+
+.shopping-confirmation { background: linear-gradient(180deg, #f9f4ec, var(--canvas)) !important; }
+.shopping-confirmation .crystal-card { background: var(--shop-paper) !important; border-color: var(--shop-line) !important; box-shadow: 0 20px 55px -34px rgba(36,27,22,.48) !important; }
+.shopping-confirmation .crystal-card:hover { transform: none; }
+.shopping-confirmation .bg-emerald-500\/20 { background: #e6f0e8 !important; }
+.shopping-confirmation .border-emerald-500\/50 { border-color: #b7d0bd !important; }
+.shopping-confirmation .text-emerald-400 { color: var(--shop-success) !important; }
+
+@media (max-width: 640px) {
+  .shopping-surface { font-size: 15px; }
+  .shopping-checkout { border-radius: .9rem; padding-bottom: 1.25rem !important; }
+  .shopping-checkout form > .pt-4:last-child,
+  .shopping-checkout > div > .pt-4:last-child { position: sticky; bottom: -1.5rem; padding: 1rem 0 1.5rem; background: linear-gradient(180deg, rgba(255,250,242,.8), var(--shop-paper) 28%); }
+}
 @media (max-width: 640px) {
   .collection-hero { min-height: 39rem; }
   .collection-hero__image { object-position: 64% center; }

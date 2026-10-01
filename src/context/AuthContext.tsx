@@ -160,6 +160,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
+// oxlint-disable-next-line react/only-export-components -- Provider hook is intentionally colocated.
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CartItem, Product, FilterState } from '../types/ecommerce';
 import { dataService } from '../utils/dataService';
+import { parseStoredCart, parseStoredStringList } from '../utils/browserStorage';
 
 export interface ToastMessage {
   id: string;
@@ -59,10 +60,10 @@ const WISH_KEY = 'gcf_wish_v6';
 
 export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>(() => {
-    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); } catch { return []; }
+    return parseStoredCart(localStorage.getItem(CART_KEY));
   });
   const [wishlist, setWishlist] = useState<string[]>(() => {
-    try { return JSON.parse(localStorage.getItem(WISH_KEY) || '[]'); } catch { return []; }
+    return parseStoredStringList(localStorage.getItem(WISH_KEY));
   });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -165,6 +166,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   );
 };
 
+// oxlint-disable-next-line react/only-export-components -- Provider hook is intentionally colocated.
 export const useStore = (): StoreContextType => {
   const context = useContext(StoreContext);
   if (!context) throw new Error('useStore must be used within a StoreProvider');

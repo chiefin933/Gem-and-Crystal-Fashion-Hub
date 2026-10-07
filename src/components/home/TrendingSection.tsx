@@ -1,7 +1,7 @@
-import React from 'react';
-import { ArrowRight } from 'lucide-react';
-import { Product } from '../../types/ecommerce';
-import { ProductCard } from '../product/ProductCard';
+import { ArrowUpRight } from "lucide-react";
+import { Product } from "../../types/ecommerce";
+import { ProductCard } from "../product/ProductCard";
+import { useStore } from "../../context/useStore";
 
 interface TrendingSectionProps {
   products: Product[];
@@ -9,43 +9,62 @@ interface TrendingSectionProps {
   setCurrentTab: (tab: string) => void;
 }
 
-export const TrendingSection: React.FC<TrendingSectionProps> = ({
+export const TrendingSection = ({
   products,
   onSelectProduct,
   setCurrentTab,
-}) => {
-  const featuredList = products.slice(0, 4);
-
+}: TrendingSectionProps) => {
+  const { catalogueStatus, setFilters } = useStore();
   return (
-    <section className="py-16 bg-[#09090b] border-b border-gem-border/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="flex flex-col sm:flex-row items-center justify-between mb-10 pb-4 border-b border-gem-border/60">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-gem-pink block mb-1">
-              Top Picked Items
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white tracking-wide">
-              TRENDING NOW
-            </h2>
-          </div>
-
-          <button
-            onClick={() => setCurrentTab('shop')}
-            className="mt-4 sm:mt-0 flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-gem-pink hover:text-gem-lightPink transition-colors group"
-          >
-            <span>View All Products</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
+    <section className="collection-section live-assortment">
+      <div className="section-heading">
+        <div>
+          <p>From the boutique</p>
+          <h2>The latest pieces.</h2>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredList.map((prod) => (
-            <ProductCard key={prod.id} product={prod} onSelect={onSelectProduct} />
+        <button
+          className="text-link"
+          onClick={() => {
+            setFilters((previous) => ({
+              ...previous,
+              gender: "all",
+              category: "All",
+              sizes: [],
+              colors: [],
+              searchQuery: "",
+              onSaleOnly: false,
+            }));
+            setCurrentTab("shop");
+            window.scrollTo(0, 0);
+          }}
+        >
+          Shop the collection <ArrowUpRight size={18} />
+        </button>
+      </div>
+      {products.length ? (
+        <div className="wishlist-grid">
+          {products.slice(0, 4).map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onSelect={onSelectProduct}
+            />
           ))}
         </div>
-
-      </div>
+      ) : (
+        <div className="catalogue-message" role="status">
+          <p>
+            {catalogueStatus === "loading"
+              ? "Loading the latest collection..."
+              : catalogueStatus === "error"
+                ? "The online collection is temporarily unavailable."
+                : "New pieces will appear here as they become available."}
+          </p>
+          <a href="https://wa.me/254718796296" target="_blank" rel="noreferrer">
+            Ask the boutique about available styles <ArrowUpRight size={16} />
+          </a>
+        </div>
+      )}
     </section>
   );
 };

@@ -5,10 +5,13 @@ import {
   Coupon,
   Branch,
   FilterState,
-  CartItem
-} from '../types/ecommerce';
-import { PRODUCTS, INITIAL_COUPONS, INITIAL_BRANCHES } from './demoData';
-import { fetchProducts as apiFetchProducts, placeOrder as apiPlaceOrder } from '../api/client';
+  CartItem,
+} from "../types/ecommerce";
+import { PRODUCTS, INITIAL_COUPONS, INITIAL_BRANCHES } from "./demoData";
+import {
+  fetchProducts as apiFetchProducts,
+  placeOrder as apiPlaceOrder,
+} from "../api/client";
 
 /**
  * PAYMENT_CAPABILITIES — single source of truth for which payment methods
@@ -18,9 +21,9 @@ import { fetchProducts as apiFetchProducts, placeOrder as apiPlaceOrder } from '
  * The storefront type still allows 'CARD' so the UI can show it as "coming
  * soon", but any CARD order attempt is rejected by the backend.
  */
-export const PAYMENT_CAPABILITIES: Record<'MPESA' | 'CARD', boolean> = {
+export const PAYMENT_CAPABILITIES: Record<"MPESA" | "CARD", boolean> = {
   MPESA: true,
-  CARD:  false, // Enable when card gateway is integrated
+  CARD: false, // Enable when card gateway is integrated
 };
 
 class DataService {
@@ -28,6 +31,7 @@ class DataService {
   private coupons: Coupon[] = INITIAL_COUPONS;
   private branches: Branch[] = INITIAL_BRANCHES;
   private isLoaded = false;
+  private catalogueStatus: "loading" | "ready" | "error" = "loading";
 
   constructor() {
     this.init();
@@ -40,29 +44,34 @@ class DataService {
       if (Array.isArray(liveProducts)) {
         this.products = liveProducts as unknown as Product[];
         this.isLoaded = true;
+        this.catalogueStatus = "ready";
         return;
       }
     } catch {
-      console.warn('API unavailable — checking demo fallback policy');
+      console.warn("API unavailable — checking demo fallback policy");
     }
 
     // Demo data fallback is ONLY permitted in development.
     // In production the storefront shows an empty catalog so customers
     // never see stale/incorrect prices or phantom stock.
-    const demoFallbackEnabled = import.meta.env.VITE_ENABLE_DEMO_FALLBACK === 'true';
+    const demoFallbackEnabled =
+      import.meta.env.VITE_ENABLE_DEMO_FALLBACK === "true";
     const isDev = import.meta.env.DEV;
 
     if (isDev || demoFallbackEnabled) {
-      console.warn('Using local demo dataset (dev/demo-fallback mode)');
+      console.warn("Using local demo dataset (dev/demo-fallback mode)");
       this.products = PRODUCTS;
       this.coupons = INITIAL_COUPONS;
       this.branches = INITIAL_BRANCHES;
     } else {
       // Production: leave products empty — UI will show "store unavailable"
-      console.error('API unavailable in production. Demo fallback is disabled. Products will not load.');
+      console.error(
+        "API unavailable in production. Demo fallback is disabled. Products will not load.",
+      );
       this.products = [];
     }
     this.isLoaded = true;
+    this.catalogueStatus = "error";
   }
 
   public async refreshProducts(): Promise<Product[]> {
@@ -70,11 +79,16 @@ class DataService {
       const liveProducts = await apiFetchProducts();
       if (Array.isArray(liveProducts)) {
         this.products = liveProducts as unknown as Product[];
+        this.catalogueStatus = "ready";
       }
     } catch {
+      this.catalogueStatus = "error";
       // keep current products
     }
     return this.products;
+  }
+  public getCatalogueStatus() {
+    return this.catalogueStatus;
   }
 
   // --- PRODUCTS API ---
@@ -83,64 +97,87 @@ class DataService {
 
     if (!filters) return result;
 
-    if (filters.gender && filters.gender !== 'all') {
-      result = result.filter(p => p.gender === filters.gender || p.gender === 'unisex');
+    if (filters.gender && filters.gender !== "all") {
+      result = result.filter(
+        (p) => p.gender === filters.gender || p.gender === "unisex",
+      );
     }
 
-    if (filters.category && filters.category !== 'All') {
-      result = result.filter(p => p.category.toLowerCase() === filters.category!.toLowerCase());
+    if (filters.category && filters.category !== "All") {
+      result = result.filter(
+        (p) => p.category.toLowerCase() === filters.category!.toLowerCase(),
+      );
     }
 
-    if (filters.searchQuery && filters.searchQuery.trim() !== '') {
+    if (filters.searchQuery && filters.searchQuery.trim() !== "") {
       const q = filters.searchQuery.toLowerCase().trim();
-      result = result.filter(p =>
-        p.title.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
+      result = result.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q),
       );
     }
 
     if (filters.sizes && filters.sizes.length > 0) {
-      result = result.filter(p => p.sizes.some(s => filters.sizes!.includes(s)));
+      result = result.filter((p) =>
+        p.sizes.some((s) => filters.sizes!.includes(s)),
+      );
     }
 
     if (filters.colors && filters.colors.length > 0) {
-      result = result.filter(p => p.colors.some(c => filters.colors!.includes(c.name)));
+      result = result.filter((p) =>
+        p.colors.some((c) => filters.colors!.includes(c.name)),
+      );
     }
 
     if (filters.minPrice !== undefined) {
-      result = result.filter(p => (p.salePrice ?? p.price) >= filters.minPrice!);
+      result = result.filter(
+        (p) => (p.salePrice ?? p.price) >= filters.minPrice!,
+      );
     }
 
     if (filters.maxPrice !== undefined) {
-      result = result.filter(p => (p.salePrice ?? p.price) <= filters.maxPrice!);
+      result = result.filter(
+        (p) => (p.salePrice ?? p.price) <= filters.maxPrice!,
+      );
     }
 
     if (filters.onSaleOnly) {
-      result = result.filter(p => p.onSale);
+      result = result.filter((p) => p.onSale);
     }
 
     if (filters.inStockOnly) {
-      result = result.filter(p => p.variants && p.variants.some(v => v.stockQuantity > 0));
+      result = result.filter(
+        (p) => p.variants && p.variants.some((v) => v.stockQuantity > 0),
+      );
     }
 
     if (filters.sortBy) {
       switch (filters.sortBy) {
-        case 'newest':
+        case "newest":
           result.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
           break;
-        case 'price-low':
-          result.sort((a, b) => (a.salePrice ?? a.price) - (b.salePrice ?? b.price));
+        case "price-low":
+          result.sort(
+            (a, b) => (a.salePrice ?? a.price) - (b.salePrice ?? b.price),
+          );
           break;
-        case 'price-high':
-          result.sort((a, b) => (b.salePrice ?? b.price) - (a.salePrice ?? a.price));
+        case "price-high":
+          result.sort(
+            (a, b) => (b.salePrice ?? b.price) - (a.salePrice ?? a.price),
+          );
           break;
-        case 'bestselling':
-          result.sort((a, b) => (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0));
+        case "bestselling":
+          result.sort(
+            (a, b) => (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0),
+          );
           break;
-        case 'featured':
+        case "featured":
         default:
-          result.sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
+          result.sort(
+            (a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0),
+          );
           break;
       }
     }
@@ -149,18 +186,20 @@ class DataService {
   }
 
   public getProductBySlug(slug: string): Product | undefined {
-    return this.products.find(p => p.slug === slug);
+    return this.products.find((p) => p.slug === slug);
   }
 
   public getProductById(id: string): Product | undefined {
-    return this.products.find(p => p.id === id);
+    return this.products.find((p) => p.id === id);
   }
 
   // --- INVENTORY API ---
-  public getLowStockVariants(threshold = 5): { product: Product; variant: ProductVariant }[] {
+  public getLowStockVariants(
+    threshold = 5,
+  ): { product: Product; variant: ProductVariant }[] {
     const lowStock: { product: Product; variant: ProductVariant }[] = [];
-    this.products.forEach(p => {
-      (p.variants || []).forEach(v => {
+    this.products.forEach((p) => {
+      (p.variants || []).forEach((v) => {
         if (v.stockQuantity <= threshold) {
           lowStock.push({ product: p, variant: v });
         }
@@ -174,29 +213,47 @@ class DataService {
     return this.coupons;
   }
 
-  public validateCoupon(code: string, subtotal: number): { valid: boolean; discount: number; coupon?: Coupon; message: string } {
-    const c = this.coupons.find(cp => cp.code.toUpperCase() === code.trim().toUpperCase());
-    if (!c || !c.isActive) return { valid: false, discount: 0, message: 'Invalid or inactive promo code.' };
-    const discount = c.discountType === 'PERCENTAGE' ? Math.round((subtotal * c.discountValue) / 100) : c.discountValue;
-    return { valid: true, discount, coupon: c, message: `Promo code ${c.code} applied!` };
+  public validateCoupon(
+    code: string,
+    subtotal: number,
+  ): { valid: boolean; discount: number; coupon?: Coupon; message: string } {
+    const c = this.coupons.find(
+      (cp) => cp.code.toUpperCase() === code.trim().toUpperCase(),
+    );
+    if (!c || !c.isActive)
+      return {
+        valid: false,
+        discount: 0,
+        message: "Invalid or inactive promo code.",
+      };
+    const discount =
+      c.discountType === "PERCENTAGE"
+        ? Math.round((subtotal * c.discountValue) / 100)
+        : c.discountValue;
+    return {
+      valid: true,
+      discount,
+      coupon: c,
+      message: `Promo code ${c.code} applied!`,
+    };
   }
 
   // --- ORDER MANAGEMENT & CHECKOUT API ---
   public async createOrderAsync(data: {
-    customer: Order['customer'];
+    customer: Order["customer"];
     items: CartItem[];
-    paymentMethod: 'MPESA' | 'CARD';
+    paymentMethod: "MPESA" | "CARD";
     couponCode?: string;
     mpesaPhone?: string;
   }): Promise<{ success: boolean; order?: any; error?: string }> {
     if (!data.items || data.items.length === 0) {
-      return { success: false, error: 'Shopping cart is empty.' };
+      return { success: false, error: "Shopping cart is empty." };
     }
 
     try {
       const order = await apiPlaceOrder({
         customer: data.customer,
-        items: data.items.map(i => ({
+        items: data.items.map((i) => ({
           variantId: i.variantId,
           quantity: i.quantity,
         })),
@@ -210,7 +267,7 @@ class DataService {
 
       return { success: true, order: order as Order };
     } catch (err: any) {
-      return { success: false, error: err.message || 'Failed to place order.' };
+      return { success: false, error: err.message || "Failed to place order." };
     }
   }
 

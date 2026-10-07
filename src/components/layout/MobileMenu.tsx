@@ -1,6 +1,9 @@
-import React from 'react';
-import { X, Phone, Mail, MapPin } from 'lucide-react';
-import { useStore } from '../../context/useStore';
+import React from "react";
+import { X, Phone, MapPin } from "lucide-react";
+import { FilterState } from "../../types/ecommerce";
+import { useModalDialog } from "../../utils/useModalDialog";
+import { useStore } from "../../context/useStore";
+import { openGemAssistant } from "../../utils/support";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -16,97 +19,151 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
   setCurrentTab,
 }) => {
   const { setFilters } = useStore();
+  useModalDialog(isOpen, "navigation", onClose);
 
   if (!isOpen) return null;
 
-  const navigateTo = (tab: string, filterObj?: any) => {
+  const navigateTo = (tab: string, filterObj?: Partial<FilterState>) => {
     if (filterObj) {
-      setFilters(prev => ({ ...prev, ...filterObj }));
+      setFilters((prev) => ({
+        ...prev,
+        searchQuery: "",
+        sizes: [],
+        colors: [],
+        onSaleOnly: false,
+        ...filterObj,
+      }));
     }
     setCurrentTab(tab);
     onClose();
+    window.scrollTo(0, 0);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex lg:hidden">
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
       {/* Drawer Container */}
-      <div className="relative w-full max-w-xs bg-[#09090b] border-r border-gem-border/80 h-full flex flex-col z-10 overflow-y-auto p-6 shadow-2xl">
+      <div
+        data-dialog="navigation"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation"
+        className="relative w-full max-w-xs bg-white border-r border-gem-border/80 h-full flex flex-col z-10 overflow-y-auto p-6 shadow-2xl"
+      >
         <div className="flex items-center justify-between pb-6 border-b border-gem-border">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded bg-gem-pink flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 9l10 13 10-13-10-7zm0 3.2L18.4 9H5.6L12 5.2z"/>
-              </svg>
-            </div>
-            <span className="font-serif text-lg font-bold text-white">GEM & CRYSTAL</span>
-          </div>
+          <button className="wordmark" onClick={() => navigateTo("home")}>
+            <span>
+              Gem &amp; Crystal<span className="brand-dot">.</span>
+            </span>
+            <small>Fashion Hub</small>
+          </button>
 
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-white">
+          <button
+            onClick={onClose}
+            aria-label="Close navigation"
+            className="p-2 text-gem-muted hover:text-gem-ink"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Navigation Links */}
-        <div className="py-6 space-y-4 font-serif text-lg font-medium">
+        <nav
+          aria-label="Mobile navigation"
+          className="py-6 space-y-4 font-serif text-xl font-medium"
+        >
           <button
-            onClick={() => navigateTo('home')}
+            className="block w-full text-left"
+            onClick={() =>
+              navigateTo("shop", { gender: "all", category: "All" })
+            }
+          >
+            Shop all
+          </button>
+          <button
+            className="block w-full text-left"
+            onClick={() => navigateTo("wishlist")}
+          >
+            Wishlist
+          </button>
+          <button
+            onClick={() => navigateTo("home")}
             className={`block w-full text-left transition-colors ${
-              currentTab === 'home' ? 'text-gem-pink font-bold' : 'text-slate-200'
+              currentTab === "home" ? "text-gem-pink font-bold" : "text-gem-ink"
             }`}
           >
-            HOME
+            Home
           </button>
 
           <button
-            onClick={() => navigateTo('women-page', { gender: 'women', category: 'All' })}
+            onClick={() =>
+              navigateTo("women-page", { gender: "women", category: "All" })
+            }
             className={`block w-full text-left transition-colors ${
-              currentTab === 'women-page' ? 'text-gem-pink font-bold' : 'text-slate-200'
+              currentTab === "women-page"
+                ? "text-gem-pink font-bold"
+                : "text-gem-ink"
             }`}
           >
-            WOMEN'S COLLECTION
+            Women
           </button>
 
           <button
-            onClick={() => navigateTo('men-page', { gender: 'men', category: 'All' })}
+            onClick={() =>
+              navigateTo("men-page", { gender: "men", category: "All" })
+            }
             className={`block w-full text-left transition-colors ${
-              currentTab === 'men-page' ? 'text-gem-pink font-bold' : 'text-slate-200'
+              currentTab === "men-page"
+                ? "text-gem-pink font-bold"
+                : "text-gem-ink"
             }`}
           >
-            MEN'S COLLECTION
+            Men
           </button>
 
           <button
-            onClick={() => navigateTo('about-us')}
+            onClick={() => navigateTo("about-us")}
             className={`block w-full text-left transition-colors ${
-              currentTab === 'about-us' ? 'text-gem-pink font-bold' : 'text-slate-200'
+              currentTab === "about-us"
+                ? "text-gem-pink font-bold"
+                : "text-gem-ink"
             }`}
           >
-            ABOUT US
+            Our story
           </button>
 
           <button
-            onClick={() => navigateTo('contact-us')}
+            onClick={() => navigateTo("contact-us")}
             className={`block w-full text-left transition-colors ${
-              currentTab === 'contact-us' ? 'text-gem-pink font-bold' : 'text-slate-200'
+              currentTab === "contact-us"
+                ? "text-gem-pink font-bold"
+                : "text-gem-ink"
             }`}
           >
-            CONTACT US
+            Contact us
           </button>
-        </div>
+          <button
+            className="block w-full text-left"
+            onClick={() => {
+              onClose();
+              openGemAssistant();
+            }}
+          >
+            Gem AI assistant
+          </button>
+        </nav>
 
         {/* Contact Info Footer */}
         <div className="mt-auto pt-6 border-t border-gem-border space-y-3">
-          <div className="pt-4 text-xs text-slate-400 space-y-2">
+          <div className="pt-4 text-xs text-gem-muted space-y-2">
             <div className="flex items-center space-x-2">
               <Phone className="w-3.5 h-3.5 text-gem-pink" />
               <span>+254 718 796 296</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Mail className="w-3.5 h-3.5 text-gem-pink" />
-              <span>info@gemandcrystal.co.ke</span>
             </div>
             <div className="flex items-center space-x-2">
               <MapPin className="w-3.5 h-3.5 text-gem-pink" />

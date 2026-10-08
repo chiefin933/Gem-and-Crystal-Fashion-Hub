@@ -58,8 +58,8 @@ export const HeroSection = ({
   const { setFilters } = useStore();
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
+  const keyboardNavigation = useRef(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const tabs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -70,7 +70,6 @@ export const HeroSection = ({
       (product) =>
         matchesSlide(product, slide.id) && product.images.some(Boolean),
     );
-  const image = liveProduct?.images.find(Boolean) || slide.fallback;
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -90,13 +89,13 @@ export const HeroSection = ({
   }, []);
 
   useEffect(() => {
-    if (!playing || hovered || focused || reducedMotion || !pageVisible) return;
+    if (!playing || focused || reducedMotion || !pageVisible) return;
     const timer = window.setInterval(
       () => setActive((previous) => (previous + 1) % slides.length),
-      6500,
+      5000,
     );
     return () => window.clearInterval(timer);
-  }, [playing, hovered, focused, reducedMotion, pageVisible]);
+  }, [playing, focused, reducedMotion, pageVisible]);
 
   const choose = (index: number, focusTab = false) => {
     const next = (index + slides.length) % slides.length;
@@ -129,9 +128,19 @@ export const HeroSection = ({
       className={`campaign showcase showcase-${slide.id} ${liveProduct ? "showcase-live" : ""}`}
       aria-roledescription="carousel"
       aria-label="Gem and Crystal collection showcase"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocusCapture={() => setFocused(true)}
+      onPointerDownCapture={() => {
+        keyboardNavigation.current = false;
+        setFocused(false);
+      }}
+      onKeyDownCapture={() => {
+        keyboardNavigation.current = true;
+        setFocused(true);
+      }}
+      onFocusCapture={(event) =>
+        setFocused(
+          keyboardNavigation.current || event.target.matches(":focus-visible"),
+        )
+      }
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget))
           setFocused(false);
@@ -142,17 +151,31 @@ export const HeroSection = ({
         role="tabpanel"
         aria-labelledby={`showcase-tab-${active}`}
       >
-        <img
-          key={image}
-          className="campaign-image"
-          src={image}
-          alt={
-            liveProduct
-              ? liveProduct.title
-              : `${slide.title} campaign inspiration`
-          }
-          fetchPriority={active === 0 ? "high" : "auto"}
-        />
+        <div
+          className="showcase-image-rail"
+          style={{ transform: `translateX(-${active * 100}%)` }}
+        >
+          {slides.map((item, index) => {
+            const product = dataService
+              .getProducts()
+              .find(
+                (candidate) =>
+                  matchesSlide(candidate, item.id) &&
+                  candidate.images.some(Boolean),
+              );
+            return (
+              <img
+                key={item.id}
+                className={`campaign-image showcase-photo-${item.id}`}
+                style={{ left: `${index * 100}%` }}
+                src={product?.images.find(Boolean) || item.fallback}
+                alt={product?.title || `${item.title} campaign inspiration`}
+                aria-hidden={active !== index}
+                fetchPriority={index === 0 ? "high" : "auto"}
+              />
+            );
+          })}
+        </div>
         <div className="campaign-content">
           <p className="campaign-kicker">The boutique showcase</p>
           <h1>
@@ -227,7 +250,10 @@ export const HeroSection = ({
             aria-label={playing ? "Pause showcase" : "Play showcase"}
             title={playing ? "Pause showcase" : "Play showcase"}
             disabled={reducedMotion}
-            onClick={() => setPlaying((value) => !value)}
+            onClick={() => {
+              setPlaying((value) => !value);
+              setFocused(false);
+            }}
           >
             {playing ? <Pause size={18} /> : <Play size={18} />}
           </button>

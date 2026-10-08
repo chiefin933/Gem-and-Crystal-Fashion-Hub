@@ -2,7 +2,7 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.1 — storefront experience update
+**Version:** 1.2 — automatic slideshow and image fitting
 
 **Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
@@ -129,8 +129,9 @@ The API must reject or hold for review any callback that does not meet all of th
 ## 12. Storefront presentation and data contracts
 
 - Implement the four-slide campaign in the existing React storefront, below the navigation rather than replacing header shopping controls. Slides represent women, men, sneakers and new arrivals and preserve the brand headline and bold slogan.
-- Keep image dimensions stable. Prefer catalogue-derived product photography where available; promotional fallback photography must not create catalogue records or assert prices/stock.
-- Use labelled native buttons for previous/next, slide selection and pause/play. Clear timers on unmount and pause rotation during hover, focus and hidden-document states. Respect prefers-reduced-motion.
+- Keep image dimensions stable and use object-fit: cover with per-slide focal positions to fill frames without distortion or blank bands. Prefer catalogue-derived product photography where available; promotional fallback photography must not create catalogue records or assert prices/stock.
+- Apply contrast-safe foreground/overlay styling when live catalogue photos replace campaign images. Verify light, dark and busy backgrounds on desktop and phones while keeping merchandise visible.
+- Use labelled native buttons for previous/next, slide selection and explicit pause/play. Start rotation automatically; pointer hover and mouse-selected controls must not stop it indefinitely. Clear timers on unmount and pause for hidden documents. Preserve keyboard-navigation and prefers-reduced-motion safeguards. Motion transitions must not expose offscreen slide controls to keyboard or screen-reader users.
 - Slide actions must reset incompatible catalogue filters and navigate to the appropriate assortment. New-arrival discovery must use actual catalogue metadata, not invented launch dates.
 - The catalogue service has no development or environment-enabled demo fallback. Official category and branch configuration lives in src/utils/storeConfig.ts. Remove the unused fake authentication provider; customer screens cannot grant owner privileges.
 - Fixed circular support controls use accessible names, device safe-area insets and bottom page clearance. Modal-aware visibility prevents them covering cart, checkout or chat actions.

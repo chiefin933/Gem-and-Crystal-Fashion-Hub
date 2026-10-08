@@ -30,13 +30,17 @@ The PRD and TRD Markdown documents, Word sharing copies, master specification an
 
 ## October showcase and assistant behaviour
 
-The campaign rotates every 6.5 seconds, with previous/next, labelled slide tabs and pause/play controls. Rotation pauses for focus, hover, hidden documents and reduced-motion preferences. Actions reset incompatible filters; new arrivals restrict the catalogue to API isNew records and expose a clearable checkbox.
+The campaign advances automatically every five seconds through a 650ms horizontal image transition, with previous/next, labelled slide tabs and explicit pause/play controls. Pointer hover and mouse-selected controls no longer stop ordinary playback. Keyboard navigation, hidden documents and reduced-motion preferences retain appropriate safeguards. Photos fill their frames using cover and per-slide focal points instead of contained images with blank bands. Actions reset incompatible filters; new arrivals restrict the catalogue to API isNew records and expose a clearable checkbox.
+
+Live-photo desktop slides use a uniform charcoal scrim and light foreground text for contrast. Phone copy remains below the photo, so it does not need the same scrim. Campaign fallback photos retain their original brightness.
 
 The assistant panel is inset 12px, constrained to 380px width and at most 440px or 65dvh height. Visual viewport changes adjust its available height and keyboard inset. Messages scroll separately from the header and composer.
 
 The original sneaker campaign asset at src/assets/gem-crystal-sneakers-campaign.webp is promotional photography, not a product listing. Matching live catalogue images take precedence over fallback campaign assets. The fixed footer displays 2023.
 
-Final October review passed desktop, 320px/390px phones and short-landscape chat checks. All four slide assets rendered, catalogue actions and filter reset worked with isolated fixtures, autoplay advanced and reduced motion stopped rotation. Carousel controls cleared the fixed support dock; the next section remained visible. The compact chat retained reachable close/composer controls. Hidden-document timer handling was source-reviewed. Word copies were rendered and visually checked. The contained women's campaign image is intentionally small at 320px rather than cropped.
+The initial October review passed desktop, 320px/390px phones and short-landscape chat checks. All four slide assets rendered, catalogue actions and filter reset worked with isolated fixtures, autoplay advanced and reduced motion stopped rotation. Carousel controls cleared the fixed support dock; the next section remained visible. The compact chat retained reachable close/composer controls. Hidden-document timer handling was source-reviewed. Word copies were rendered and visually checked. Subsequent owner feedback requires filled photo frames and automatic playback during ordinary pointer interaction; these supersede the initial contained-photo and hover-pause behaviour.
+
+The automatic-playback/image-fit revision passed fresh desktop and phone checks with fallback images and isolated live-product fixtures. Rotation continued during hover and after pointer clicks; Pause held and Play resumed. All four image frames filled without blank bands or stretching, phone controls remained clear, and reduced motion disabled rotation/transitions. Live-photo text contrast was corrected and rechecked. Build, lint and all nine tests passed; hidden-tab handling was source-reviewed.
 
 ## Campaign asset
 

@@ -2,7 +2,7 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.1 — storefront experience update
+**Version:** 1.2 — automatic slideshow and image fitting
 
 **Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
@@ -118,7 +118,9 @@ Gem & Crystal Fashion Hub is one fashion-commerce system for the customer websit
 
 - Preserve the original black and pink boutique identity, with clear merchandise grids, responsive navigation and explicit size/colour selection.
 - The top campaign below navigation contains four slides: women's clothing, men's clothing, sneakers and new arrivals. Each offers a corresponding catalogue action, previous/next controls and a labelled slide selector.
-- Customers can pause automatic rotation. Rotation pauses during interaction and honours reduced-motion preferences.
+- Slides advance automatically during ordinary viewing, including pointer hover and mouse interaction with slide selectors. Customers can pause/resume rotation explicitly. Keyboard navigation, hidden-document and reduced-motion safeguards remain supported.
+- Photos fill their slide frames without stretching or blank bands. Per-slide cropping keeps clothing and sneakers visible across desktop and phone layouts; motion transitions honour reduced-motion preferences.
+- Brand text, slide copy and controls remain readable over both promotional photography and live catalogue photos without obscuring the merchandise.
 - Product records, prices and stock come only from the API. Campaign photography is promotional imagery, not evidence of a particular product's availability. An unavailable or empty catalogue must remain honest; no demo catalogue or fake customer/admin login is allowed.
 - The slogan "Be bold. Be bright. Be you." is prominently sized and bold on desktop and phones.
 - Circular WhatsApp and Gem AI controls stay fixed at the bottom with safe-area spacing. They hide while shopping or chat dialogs are open.

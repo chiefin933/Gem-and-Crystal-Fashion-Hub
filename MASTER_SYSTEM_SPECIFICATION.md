@@ -11,7 +11,7 @@
 
 ## Storefront revision October 2026
 
-The current storefront has a four-slide top campaign for women, men, sneakers and new arrivals; API-only catalogue records; explicit variant selection; fixed circular WhatsApp/Gem AI controls; a compact mobile assistant; and a fixed 2023 copyright display. The brand slogan is large and bold across phone and desktop layouts. Keep docs/PRD.md, docs/TRD.md and project documentation synchronized with future changes. Live M-Pesa acceptance and the reported POS popup issue still require verification.
+The current storefront has an automatically advancing four-slide top campaign for women, men, sneakers and new arrivals, with explicit pause/play and photos filling their frames without stretching; API-only catalogue records; explicit variant selection; fixed circular WhatsApp/Gem AI controls; a compact mobile assistant; and a fixed 2023 copyright display. The brand slogan is large and bold across phone and desktop layouts. Keep docs/PRD.md, docs/TRD.md and project documentation synchronized with future changes. Live M-Pesa acceptance and the reported POS popup issue still require verification.
 
 ## 1. System Architecture
 

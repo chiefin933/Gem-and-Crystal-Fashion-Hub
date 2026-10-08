@@ -1,9 +1,4 @@
-import { Product, CategoryItem, Branch, Coupon } from '../types/ecommerce';
-
-// Set to empty string to hide the AI-generated model image and show the brand card instead
-export const HERO_REAL_IMAGE = '';
-
-export const INITIAL_COUPONS: Coupon[] = [];
+import { CategoryItem, Branch } from '../types/ecommerce';
 
 export const INITIAL_BRANCHES: Branch[] = [
   {
@@ -15,8 +10,6 @@ export const INITIAL_BRANCHES: Branch[] = [
     isMainStore: true,
   }
 ];
-
-export const PRODUCTS: Product[] = [];
 
 export const CATEGORIES: CategoryItem[] = [
   {

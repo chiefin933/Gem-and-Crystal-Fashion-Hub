@@ -5,7 +5,7 @@ import { useModalDialog } from "../../utils/useModalDialog";
 import { Product, FilterState } from "../../types/ecommerce";
 import { ProductCard } from "./ProductCard";
 import { ProductFilters } from "./ProductFilters";
-import { CATEGORIES } from "../../utils/demoData";
+import { CATEGORIES } from "../../utils/storeConfig";
 
 export interface ProductGridProps {
   title?: string;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useStore } from "../../context/useStore";
-import { CATEGORIES } from "../../utils/demoData";
+import { CATEGORIES } from "../../utils/storeConfig";
 import dresses from "../../assets/cat_dresses_1787579504483.webp";
 import denim from "../../assets/prod_mom_jeans_blue_1787580129860.webp";
 import heels from "../../assets/cat_heels_1787579612171.webp";

@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { useStore } from "../../context/useStore";
-import { CATEGORIES } from "../../utils/demoData";
+import { CATEGORIES } from "../../utils/storeConfig";
 import { openGemAssistant } from "../../utils/support";
 export const Footer = ({
   setCurrentTab,

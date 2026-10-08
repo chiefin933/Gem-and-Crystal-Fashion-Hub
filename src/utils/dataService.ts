@@ -7,7 +7,7 @@ import {
   FilterState,
   CartItem,
 } from "../types/ecommerce";
-import { PRODUCTS, INITIAL_COUPONS, INITIAL_BRANCHES } from "./demoData";
+import { INITIAL_BRANCHES } from "./storeConfig";
 import {
   fetchProducts as apiFetchProducts,
   placeOrder as apiPlaceOrder,
@@ -28,8 +28,7 @@ export const PAYMENT_CAPABILITIES: Record<"MPESA" | "CARD", boolean> = {
 
 class DataService {
   private products: Product[] = [];
-  private coupons: Coupon[] = INITIAL_COUPONS;
-  private branches: Branch[] = INITIAL_BRANCHES;
+  private coupons: Coupon[] = [];
   private isLoaded = false;
   private catalogueStatus: "loading" | "ready" | "error" = "loading";
 
@@ -48,28 +47,10 @@ class DataService {
         return;
       }
     } catch {
-      console.warn("API unavailable — checking demo fallback policy");
+      console.warn("Catalogue API unavailable");
     }
 
-    // Demo data fallback is ONLY permitted in development.
-    // In production the storefront shows an empty catalog so customers
-    // never see stale/incorrect prices or phantom stock.
-    const demoFallbackEnabled =
-      import.meta.env.VITE_ENABLE_DEMO_FALLBACK === "true";
-    const isDev = import.meta.env.DEV;
-
-    if (isDev || demoFallbackEnabled) {
-      console.warn("Using local demo dataset (dev/demo-fallback mode)");
-      this.products = PRODUCTS;
-      this.coupons = INITIAL_COUPONS;
-      this.branches = INITIAL_BRANCHES;
-    } else {
-      // Production: leave products empty — UI will show "store unavailable"
-      console.error(
-        "API unavailable in production. Demo fallback is disabled. Products will not load.",
-      );
-      this.products = [];
-    }
+    this.products = [];
     this.isLoaded = true;
     this.catalogueStatus = "error";
   }

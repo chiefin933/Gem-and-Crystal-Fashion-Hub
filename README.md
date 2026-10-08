@@ -24,6 +24,8 @@ The requirements documents describe the complete product: catalogue, inventory, 
 
 The October 2026 storefront update adds an automatically advancing four-slide campaign for women, men, sneakers and new arrivals with fitted photos and pause/play, a compact mobile Gem AI panel and a fixed 2023 copyright display. Catalogue records remain API-only. Update the PRD, TRD, their Word sharing copies and relevant project documentation alongside future code or visual changes.
 
+Phone-specific corrections use taller subject-aware photo frames and touch-safe autoplay. Reduced motion changes slides instantly rather than disabling playback. The approved desktop layout remains unchanged.
+
 ## Local development
 
 Open one terminal per application:

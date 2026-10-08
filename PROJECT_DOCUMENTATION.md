@@ -15,6 +15,8 @@ The top campaign showcases women's clothing, men's clothing, sneakers and new ar
 
 Requirements and implementation contracts are maintained in docs/PRD.md and docs/TRD.md, with sharing copies in Word. Future changes must update these documents and the relevant verification notes before delivery. Production payment acceptance and the reported POS M-Pesa popup remain unverified; no frontend change marks an unverified payment paid.
 
+The recorded phone experience prompted mobile-only photo framing corrections: garment-aware taller frames replace the shallow background crop. Automatic playback must continue after touch interaction; reduced-motion mode uses instant slide changes with usable Pause/Play. Desktop appearance remains unchanged. Tests include the actual deployed catalogue images visible in the recording, not just fallback assets.
+
 ## 1. Executive Summary & Brand Identity
 
 **Gem & Crystal Fashion Hub** is a luxury fashion boutique and point-of-sale (POS) retail system engineered for the Kenyan fashion market. Operating both a digital e-commerce storefront and a physical boutique hub located in **Roysambu, Nairobi, Kenya**, Gem & Crystal specializes in 12 official fashion categories.

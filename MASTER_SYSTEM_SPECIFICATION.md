@@ -11,6 +11,8 @@
 
 ## Storefront revision October 2026
 
+Phone-recording acceptance now requires taller garment-aware mobile photo frames and touch-safe five-second automatic playback. Reduced motion removes transition animation but keeps instant slide changes and usable Pause/Play. Preserve the approved desktop appearance and verify against deployed catalogue photography.
+
 The current storefront has an automatically advancing four-slide top campaign for women, men, sneakers and new arrivals, with explicit pause/play and photos filling their frames without stretching; API-only catalogue records; explicit variant selection; fixed circular WhatsApp/Gem AI controls; a compact mobile assistant; and a fixed 2023 copyright display. The brand slogan is large and bold across phone and desktop layouts. Keep docs/PRD.md, docs/TRD.md and project documentation synchronized with future changes. Live M-Pesa acceptance and the reported POS popup issue still require verification.
 
 ## 1. System Architecture

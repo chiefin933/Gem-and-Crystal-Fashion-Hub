@@ -75,6 +75,14 @@ export const HeroSection = ({
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const motion = () => setReducedMotion(media.matches);
     const visibility = () => setPageVisible(!document.hidden);
+    const keyboard = (event: KeyboardEvent) => {
+      if (event.key === "Tab") keyboardNavigation.current = true;
+    };
+    const pointer = () => {
+      keyboardNavigation.current = false;
+    };
+    document.addEventListener("keydown", keyboard, true);
+    document.addEventListener("pointerdown", pointer, true);
     media.addEventListener("change", motion);
     document.addEventListener("visibilitychange", visibility);
     const frame = requestAnimationFrame(() => {
@@ -85,17 +93,19 @@ export const HeroSection = ({
       cancelAnimationFrame(frame);
       media.removeEventListener("change", motion);
       document.removeEventListener("visibilitychange", visibility);
+      document.removeEventListener("keydown", keyboard, true);
+      document.removeEventListener("pointerdown", pointer, true);
     };
   }, []);
 
   useEffect(() => {
-    if (!playing || focused || reducedMotion || !pageVisible) return;
+    if (!playing || focused || !pageVisible) return;
     const timer = window.setInterval(
       () => setActive((previous) => (previous + 1) % slides.length),
       5000,
     );
     return () => window.clearInterval(timer);
-  }, [playing, focused, reducedMotion, pageVisible]);
+  }, [playing, focused, pageVisible]);
 
   const choose = (index: number, focusTab = false) => {
     const next = (index + slides.length) % slides.length;
@@ -136,11 +146,7 @@ export const HeroSection = ({
         keyboardNavigation.current = true;
         setFocused(true);
       }}
-      onFocusCapture={(event) =>
-        setFocused(
-          keyboardNavigation.current || event.target.matches(":focus-visible"),
-        )
-      }
+      onFocusCapture={() => setFocused(keyboardNavigation.current)}
       onBlurCapture={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget))
           setFocused(false);
@@ -154,6 +160,7 @@ export const HeroSection = ({
         <div
           className="showcase-image-rail"
           style={{ transform: `translateX(-${active * 100}%)` }}
+          data-reduced-motion={reducedMotion}
         >
           {slides.map((item, index) => {
             const product = dataService
@@ -249,7 +256,6 @@ export const HeroSection = ({
             className="icon-button"
             aria-label={playing ? "Pause showcase" : "Play showcase"}
             title={playing ? "Pause showcase" : "Play showcase"}
-            disabled={reducedMotion}
             onClick={() => {
               setPlaying((value) => !value);
               setFocused(false);

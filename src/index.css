@@ -1259,10 +1259,20 @@ html {
   transition: transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 @media (min-width: 641px) {
-  .showcase-live { background: #111; color: white; }
-  .showcase-live .showcase-image-rail { opacity: .42; }
-  .showcase-live .campaign-copy, .showcase-live .campaign-kicker { color: white; }
-  .showcase-live .campaign-signature { color: #ffc6dc; }
+  .showcase-live {
+    background: #111;
+    color: white;
+  }
+  .showcase-live .showcase-image-rail {
+    opacity: 0.42;
+  }
+  .showcase-live .campaign-copy,
+  .showcase-live .campaign-kicker {
+    color: white;
+  }
+  .showcase-live .campaign-signature {
+    color: #ffc6dc;
+  }
 }
 .showcase-image-rail .campaign-image {
   width: 100%;
@@ -1286,6 +1296,54 @@ html {
 @media (max-width: 640px) and (max-height: 780px) {
   .showcase-image-rail {
     height: 130px;
+  }
+}
+.showcase-image-rail[data-reduced-motion="true"] {
+  transition: none;
+}
+@media (max-width: 640px) {
+  .showcase-controls { z-index: 2; }
+  .showcase,
+  .showcase-live {
+    height: 650px;
+  }
+  .showcase .showcase-image-rail {
+    height: 290px;
+  }
+  .showcase .showcase-image-rail .campaign-image {
+    height: 100%;
+    object-position: center 45%;
+  }
+  .showcase .showcase-image-rail .showcase-photo-sneakers {
+    object-position: center 70%;
+  }
+  .showcase .campaign-content {
+    padding: 310px 24px 80px;
+  }
+  .showcase .campaign-kicker,
+  .showcase .campaign-copy {
+    display: none;
+  }
+  .showcase h2 {
+    margin-top: 16px;
+    margin-bottom: 18px;
+  }
+  .showcase .campaign-signature {
+    margin-top: 18px;
+    font-weight: 700;
+  }
+}
+@media (max-width: 640px) and (max-height: 780px) {
+  .showcase-controls { bottom: 32px; }
+  .showcase,
+  .showcase-live {
+    height: 600px;
+  }
+  .showcase .showcase-image-rail {
+    height: 250px;
+  }
+  .showcase .campaign-content {
+    padding-top: 270px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

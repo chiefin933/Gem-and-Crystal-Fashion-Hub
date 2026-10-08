@@ -30,7 +30,7 @@ The PRD and TRD Markdown documents, Word sharing copies, master specification an
 
 ## October showcase and assistant behaviour
 
-The campaign advances automatically every five seconds through a 650ms horizontal image transition, with previous/next, labelled slide tabs and explicit pause/play controls. Pointer hover and mouse-selected controls no longer stop ordinary playback. Keyboard navigation, hidden documents and reduced-motion preferences retain appropriate safeguards. Photos fill their frames using cover and per-slide focal points instead of contained images with blank bands. Actions reset incompatible filters; new arrivals restrict the catalogue to API isNew records and expose a clearable checkbox.
+The campaign advances automatically every five seconds through a 650ms horizontal image transition, with previous/next, labelled slide tabs and explicit pause/play controls. Pointer/touch interaction does not stop ordinary playback. Actual keyboard navigation and hidden documents retain appropriate safeguards. Reduced motion uses instant slide changes without disabling automatic playback or Pause/Play. Photos fill their frames using cover and per-slide focal points instead of contained images with blank bands. Actions reset incompatible filters; new arrivals restrict the catalogue to API isNew records and expose a clearable checkbox.
 
 Live-photo desktop slides use a uniform charcoal scrim and light foreground text for contrast. Phone copy remains below the photo, so it does not need the same scrim. Campaign fallback photos retain their original brightness.
 
@@ -41,6 +41,14 @@ The original sneaker campaign asset at src/assets/gem-crystal-sneakers-campaign.
 The initial October review passed desktop, 320px/390px phones and short-landscape chat checks. All four slide assets rendered, catalogue actions and filter reset worked with isolated fixtures, autoplay advanced and reduced motion stopped rotation. Carousel controls cleared the fixed support dock; the next section remained visible. The compact chat retained reachable close/composer controls. Hidden-document timer handling was source-reviewed. Word copies were rendered and visually checked. Subsequent owner feedback requires filled photo frames and automatic playback during ordinary pointer interaction; these supersede the initial contained-photo and hover-pause behaviour.
 
 The automatic-playback/image-fit revision passed fresh desktop and phone checks with fallback images and isolated live-product fixtures. Rotation continued during hover and after pointer clicks; Pause held and Play resumed. All four image frames filled without blank bands or stretching, phone controls remained clear, and reduced motion disabled rotation/transitions. Live-photo text contrast was corrected and rechecked. Build, lint and all nine tests passed; hidden-tab handling was source-reviewed.
+
+## Phone recording correction
+
+The owner's fix.mp4 recording showed a deployed phone slideshow remaining on 01/04 for twelve seconds and the women's portrait photo cropped to purple background and the top of a model's head. The public deployed JavaScript already contained the latest rail and five-second timer; this was not assumed to be an outdated deployment. The correction preserves desktop appearance while giving phones a taller, subject-aware photo frame and touch-safe automatic playback. Reduced-motion playback now changes slides instantly rather than disabling the timer and Play button. Validation uses the actual public catalogue photography shown in the recording as well as fallback assets. No database records are changed by this correction.
+
+Native touch testing found a transparent campaign-content layer intercepting mobile carousel controls despite their visible appearance. Mobile controls now sit above that layer, with extra clearance on short phones. Photo frames are 250-290px with centered garment-aware cropping; mobile-only copy is condensed to retain the brand, bold slogan, CTA and controls. The desktop layout is preserved.
+
+True touch emulation verified five touch points and a coarse pointer, not only a resized desktop viewport. Native slide-selector taps, five-second autoplay, Pause and Play passed; reduced motion used zero-duration transitions while autoplay remained active. Actual deployed portrait imagery showed the garment at 320/360/390px widths. Build, lint and all nine tests passed. This verifies the corrected local build; deployment must serve the new assets before the owner's live phone can show the changes.
 
 ## Campaign asset
 

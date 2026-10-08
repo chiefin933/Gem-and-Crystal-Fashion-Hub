@@ -2,7 +2,7 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.2 — automatic slideshow and image fitting
+**Version:** 1.3 — recorded phone experience correction
 
 **Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
@@ -131,7 +131,9 @@ The API must reject or hold for review any callback that does not meet all of th
 - Implement the four-slide campaign in the existing React storefront, below the navigation rather than replacing header shopping controls. Slides represent women, men, sneakers and new arrivals and preserve the brand headline and bold slogan.
 - Keep image dimensions stable and use object-fit: cover with per-slide focal positions to fill frames without distortion or blank bands. Prefer catalogue-derived product photography where available; promotional fallback photography must not create catalogue records or assert prices/stock.
 - Apply contrast-safe foreground/overlay styling when live catalogue photos replace campaign images. Verify light, dark and busy backgrounds on desktop and phones while keeping merchandise visible.
-- Use labelled native buttons for previous/next, slide selection and explicit pause/play. Start rotation automatically; pointer hover and mouse-selected controls must not stop it indefinitely. Clear timers on unmount and pause for hidden documents. Preserve keyboard-navigation and prefers-reduced-motion safeguards. Motion transitions must not expose offscreen slide controls to keyboard or screen-reader users.
+- Use labelled native buttons for previous/next, slide selection and explicit pause/play. Start rotation automatically every five seconds; pointer hover and touch/pointer-selected controls must not stop it indefinitely. Track actual keyboard input rather than inferring it from pointer-triggered focus-visible. Clear timers on unmount and pause for hidden documents. Reduced motion disables animated transitions, not automatic instant slide changes or enabled Pause/Play. Motion transitions must not expose offscreen slide controls to keyboard or screen-reader users.
+- Mobile photo-frame sizing and focal positions must show the garment/shoes in actual portrait catalogue photos. Do not reuse the shallow 130px, top-aligned crop that showed mostly background in the phone recording. Keep these layout corrections within mobile breakpoints and preserve approved desktop appearance.
+- Mobile carousel controls must sit above transparent campaign text layers in the stacking order. Verify elementFromPoint at each control centre and native touch activation; visible buttons or programmatic click handlers alone do not prove the controls can receive taps.
 - Slide actions must reset incompatible catalogue filters and navigate to the appropriate assortment. New-arrival discovery must use actual catalogue metadata, not invented launch dates.
 - The catalogue service has no development or environment-enabled demo fallback. Official category and branch configuration lives in src/utils/storeConfig.ts. Remove the unused fake authentication provider; customer screens cannot grant owner privileges.
 - Fixed circular support controls use accessible names, device safe-area insets and bottom page clearance. Modal-aware visibility prevents them covering cart, checkout or chat actions.

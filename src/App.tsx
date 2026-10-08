@@ -70,6 +70,7 @@ const MainAppContent: React.FC = () => {
       minPrice: 0,
       maxPrice: 30000,
       onSaleOnly: false,
+      newArrivalsOnly: false,
       inStockOnly: false,
       searchQuery: "",
       sortBy: "featured",

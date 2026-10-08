@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import type { ApiProduct } from '../api/client';
 
 vi.mock('../api/client', () => ({
   fetchProducts: vi.fn(),
@@ -30,5 +31,17 @@ describe('live catalogue only', () => {
     const { dataService } = await import('./dataService');
     await vi.waitFor(() => expect(dataService.getCatalogueStatus()).toBe('ready'));
     expect(dataService.getProducts()).toEqual([]);
+  });
+
+  it('limits new arrivals to API products explicitly marked new', async () => {
+    const { fetchProducts } = await import('../api/client');
+    vi.mocked(fetchProducts).mockResolvedValue([
+      { id: 'new', isNew: true },
+      { id: 'existing', isNew: false },
+    ] as ApiProduct[]);
+    const { dataService } = await import('./dataService');
+    await vi.waitFor(() => expect(dataService.getCatalogueStatus()).toBe('ready'));
+    expect(dataService.getProducts({ newArrivalsOnly: true }).map(product => product.id)).toEqual(['new']);
+    expect(dataService.getProducts({ newArrivalsOnly: false })).toHaveLength(2);
   });
 });

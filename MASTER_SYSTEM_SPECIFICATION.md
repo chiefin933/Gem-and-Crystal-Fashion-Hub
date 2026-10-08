@@ -4,10 +4,14 @@
 **Location:** Roysambu, Nairobi, Kenya  
 **Business Type:** Fashion Boutique — Physical Store + Online Shop  
 **Tagline:** BE BOLD. BE BRIGHT. BE YOU.  
-**Last Updated:** 2026-09-13  
+**Last Updated:** 2026-10-08
 **Status:** Active — Pre-Daraja Sandbox / Pre-Physical-Shop-Test  
 
 ---
+
+## Storefront revision October 2026
+
+The current storefront has a four-slide top campaign for women, men, sneakers and new arrivals; API-only catalogue records; explicit variant selection; fixed circular WhatsApp/Gem AI controls; a compact mobile assistant; and a fixed 2023 copyright display. The brand slogan is large and bold across phone and desktop layouts. Keep docs/PRD.md, docs/TRD.md and project documentation synchronized with future changes. Live M-Pesa acceptance and the reported POS popup issue still require verification.
 
 ## 1. System Architecture
 

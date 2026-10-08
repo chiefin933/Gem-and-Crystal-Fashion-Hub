@@ -31,6 +31,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
         sizes: [],
         colors: [],
         onSaleOnly: false,
+        newArrivalsOnly: false,
         ...filterObj,
       }));
     }

@@ -35,6 +35,7 @@ export const EditorialBanner = ({
           sizes: [],
           colors: [],
           onSaleOnly: true,
+          newArrivalsOnly: false,
         }));
         setCurrentTab("shop");
         window.scrollTo(0, 0);

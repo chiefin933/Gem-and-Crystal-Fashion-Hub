@@ -33,6 +33,7 @@ export const TrendingSection = ({
               colors: [],
               searchQuery: "",
               onSaleOnly: false,
+              newArrivalsOnly: false,
             }));
             setCurrentTab("shop");
             window.scrollTo(0, 0);

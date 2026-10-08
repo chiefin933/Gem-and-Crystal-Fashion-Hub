@@ -47,6 +47,7 @@ export const Footer = ({
                     sizes: [],
                     colors: [],
                     onSaleOnly: false,
+                    newArrivalsOnly: false,
                   }));
                   navigate("shop");
                 }}
@@ -68,7 +69,7 @@ export const Footer = ({
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} Gem &amp; Crystal Fashion Hub</span>
+        <span>© 2023 Gem &amp; Crystal Fashion Hub</span>
         <span>Kenya / KSh</span>
       </div>
     </footer>

@@ -34,6 +34,29 @@ export const BilingualAiChat: React.FC = () => {
     },
   ]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    const viewport = window.visualViewport;
+    const update = () => {
+      const height = viewport?.height ?? window.innerHeight;
+      panelRef.current?.style.setProperty(
+        "--chat-available-height",
+        `${height}px`,
+      );
+      panelRef.current?.style.setProperty(
+        "--chat-keyboard-inset",
+        `${Math.max(0, window.innerHeight - height - (viewport?.offsetTop ?? 0))}px`,
+      );
+    };
+    update();
+    viewport?.addEventListener("resize", update);
+    viewport?.addEventListener("scroll", update);
+    return () => {
+      viewport?.removeEventListener("resize", update);
+      viewport?.removeEventListener("scroll", update);
+    };
+  }, [isOpen]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -124,11 +147,12 @@ export const BilingualAiChat: React.FC = () => {
       {/* Chat Window — full-width bottom sheet on mobile, popup on sm+ */}
       {isOpen && (
         <div
+          ref={panelRef}
           role="dialog"
           data-dialog="assistant"
           aria-modal="true"
           aria-label="Gem AI assistant"
-          className="gem-chat fixed bottom-0 left-0 right-0 sm:bottom-6 sm:left-6 sm:right-auto z-50 w-full sm:w-[92vw] sm:max-w-sm bg-white border border-gem-border shadow-xl overflow-hidden flex flex-col h-[88vh] sm:h-[480px]"
+          className="gem-chat z-50 bg-white border border-gem-border shadow-xl overflow-hidden flex flex-col"
         >
           {/* Header */}
           <div className="p-4 bg-white border-b border-gem-border flex items-center justify-between">
@@ -156,7 +180,7 @@ export const BilingualAiChat: React.FC = () => {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-white">
+          <div className="flex-1 min-h-0 p-4 overflow-y-auto space-y-3 bg-white">
             {messages.map((msg) => (
               <div
                 key={msg.id}

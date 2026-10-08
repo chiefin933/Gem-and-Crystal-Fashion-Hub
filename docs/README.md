@@ -18,3 +18,5 @@ The Word copies are for sharing or printing. The Markdown versions are the easie
 ## Source of truth
 
 Product and technical documentation should be updated whenever the team changes checkout, payments, inventory, roles, deployment, or the customer journey.
+
+Every delivered code or visual change must update the PRD, TRD and relevant project documentation, including the Word sharing copies. Record verification and known limitations without treating local tests as proof of production payment acceptance. The October 2026 storefront revision documents the four-slide campaign, compact phone assistant, fixed 2023 footer, API-only catalogue, circular support buttons and prominent slogan.

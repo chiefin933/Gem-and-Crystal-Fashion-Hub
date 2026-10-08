@@ -1088,6 +1088,169 @@ html {
 .floating-support-ai:hover {
   background: #9d1b54;
 }
+.showcase {
+  height: 620px;
+  background: #e1e4e5;
+}
+.showcase .campaign-content {
+  padding-top: 45px;
+}
+.showcase h1 {
+  font-size: 62px;
+}
+.showcase h1 span {
+  font-size: 35px;
+}
+.showcase h2 {
+  font: 500 30px/1.2 var(--font-serif);
+  margin-top: 28px;
+}
+.showcase .campaign-copy {
+  margin: 15px 0 24px;
+}
+.showcase .campaign-signature {
+  margin-top: 26px;
+}
+.showcase-women:not(.showcase-live) {
+  background: #342926;
+  color: white;
+}
+.showcase-women:not(.showcase-live) .campaign-image {
+  opacity: 0.48;
+}
+.showcase-women:not(.showcase-live) .campaign-copy,
+.showcase-women:not(.showcase-live) .campaign-kicker {
+  color: white;
+}
+.showcase-women:not(.showcase-live) .campaign-signature {
+  color: #ffb7d5;
+}
+.showcase-live .campaign-image {
+  object-fit: contain;
+  object-position: right center;
+}
+.showcase-controls {
+  position: absolute;
+  bottom: 24px;
+  left: max(32px, calc((100vw - 1216px) / 2));
+  right: max(32px, calc((100vw - 1216px) / 2));
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.showcase-dots,
+.showcase-tools {
+  display: flex;
+  gap: 6px;
+}
+.showcase-dots button {
+  width: 32px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+}
+.showcase-dots span {
+  width: 7px;
+  height: 7px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+.showcase-dots [aria-selected="true"] span {
+  background: currentColor;
+  width: 10px;
+  height: 10px;
+}
+.showcase-counter {
+  font-size: 12px;
+}
+.showcase-tools {
+  margin-left: auto;
+}
+.showcase-tools .icon-button {
+  background: #ffffffdd;
+  color: #191719;
+  width: 44px;
+  height: 44px;
+}
+.gem-chat {
+  position: fixed;
+  right: 12px;
+  bottom: calc(
+    12px + env(safe-area-inset-bottom) + var(--chat-keyboard-inset, 0px)
+  );
+  width: min(380px, calc(100vw - 24px));
+  height: min(440px, 65dvh, calc(var(--chat-available-height, 100dvh) - 24px));
+  border-radius: 6px;
+}
+.gem-chat > div:not(.flex-1),
+.gem-chat > form {
+  flex-shrink: 0;
+}
+.gem-chat input {
+  min-width: 0;
+  font-size: 16px;
+}
+@media (max-width: 640px) {
+  .showcase {
+    height: 640px;
+  }
+  .showcase .campaign-image {
+    height: 180px;
+    object-position: right top;
+  }
+  .showcase .campaign-content {
+    padding: 195px 24px 80px;
+  }
+  .showcase h1 {
+    font-size: 39px;
+  }
+  .showcase h1 span {
+    font-size: 25px;
+  }
+  .showcase h2 {
+    font-size: 24px;
+    margin-top: 18px;
+  }
+  .showcase .campaign-copy {
+    margin: 10px 0 16px;
+  }
+  .showcase .campaign-signature {
+    font-size: 20px;
+    margin-top: 16px;
+  }
+  .showcase-controls {
+    left: 18px;
+    right: 18px;
+    bottom: 24px;
+    gap: 8px;
+  }
+  .showcase-dots {
+    gap: 0;
+  }
+  .showcase-dots button {
+    width: 24px;
+  }
+  .showcase-tools {
+    gap: 2px;
+  }
+  .showcase-women:not(.showcase-live) .campaign-image {
+    opacity: 1;
+    object-fit: contain;
+    object-position: center;
+  }
+  .showcase-sneakers .campaign-image { object-position: right bottom; }
+}
+@media (max-width: 640px) and (max-height: 780px) {
+  .showcase {
+    height: 590px;
+  }
+  .showcase .campaign-image {
+    height: 130px;
+  }
+  .showcase .campaign-content {
+    padding-top: 145px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

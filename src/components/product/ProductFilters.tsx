@@ -233,6 +233,20 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
         <label className="flex items-center space-x-2.5 cursor-pointer">
           <input
             type="checkbox"
+            checked={filters.newArrivalsOnly}
+            onChange={(event) =>
+              setFilters((previous) => ({
+                ...previous,
+                newArrivalsOnly: event.target.checked,
+              }))
+            }
+            className="w-4 h-4 accent-gem-pink"
+          />
+          <span className="font-semibold text-gem-ink">New arrivals only</span>
+        </label>
+        <label className="flex items-center space-x-2.5 cursor-pointer">
+          <input
+            type="checkbox"
             checked={filters.onSaleOnly}
             onChange={(e) =>
               setFilters((prev) => ({ ...prev, onSaleOnly: e.target.checked }))

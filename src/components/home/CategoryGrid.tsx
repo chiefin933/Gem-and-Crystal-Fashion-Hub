@@ -24,6 +24,7 @@ export const CategoryGrid = ({
       sizes: [],
       colors: [],
       onSaleOnly: false,
+      newArrivalsOnly: false,
     }));
     setCurrentTab("shop");
     window.scrollTo(0, 0);

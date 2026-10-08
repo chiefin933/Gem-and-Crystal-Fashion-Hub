@@ -2,8 +2,9 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.0 — pre-launch baseline  
-**Date:** 4 September 2026  
+**Version:** 1.1 — storefront experience update
+
+**Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
 
 ## 1. Architecture
@@ -124,3 +125,16 @@ The API must reject or hold for review any callback that does not meet all of th
 5. Test POS reconnect after payment confirmation.
 6. Test concurrent stock requests and unauthorised admin/POS requests.
 7. Confirm no real credentials are committed to Git.
+
+## 12. Storefront presentation and data contracts
+
+- Implement the four-slide campaign in the existing React storefront, below the navigation rather than replacing header shopping controls. Slides represent women, men, sneakers and new arrivals and preserve the brand headline and bold slogan.
+- Keep image dimensions stable. Prefer catalogue-derived product photography where available; promotional fallback photography must not create catalogue records or assert prices/stock.
+- Use labelled native buttons for previous/next, slide selection and pause/play. Clear timers on unmount and pause rotation during hover, focus and hidden-document states. Respect prefers-reduced-motion.
+- Slide actions must reset incompatible catalogue filters and navigate to the appropriate assortment. New-arrival discovery must use actual catalogue metadata, not invented launch dates.
+- The catalogue service has no development or environment-enabled demo fallback. Official category and branch configuration lives in src/utils/storeConfig.ts. Remove the unused fake authentication provider; customer screens cannot grant owner privileges.
+- Fixed circular support controls use accessible names, device safe-area insets and bottom page clearance. Modal-aware visibility prevents them covering cart, checkout or chat actions.
+- Constrain the mobile assistant with viewport-relative maximum height and inset width, including short viewports. Its header and composer remain reachable while messages scroll internally. Preserve keyboard focus, Escape dismissal and the existing chat API integration.
+- Footer year is the literal 2023. Do not derive it from the runtime clock.
+- Verify desktop, 320px and 390px phone widths, short viewports, all slide navigation/filter actions, rotation controls, assistant open/close/send layout, empty/unavailable catalogue and reduced-motion behaviour.
+- Update Markdown requirements, sharing copies and project documentation alongside code changes. Build/lint/unit and browser checks do not replace live merchant payment verification.

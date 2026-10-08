@@ -64,6 +64,7 @@ const DEFAULT_FILTERS: FilterState = {
   minPrice: 0,
   maxPrice: 30000,
   onSaleOnly: false,
+  newArrivalsOnly: false,
   inStockOnly: false,
   searchQuery: "",
   sortBy: "featured",

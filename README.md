@@ -22,6 +22,8 @@ Gem & Crystal is a pre-launch fashion-commerce system for the online shop and ph
 
 The requirements documents describe the complete product: catalogue, inventory, website checkout, admin, POS, security, deployment and M-Pesa payment confirmation.
 
+The October 2026 storefront update adds a four-slide campaign for women, men, sneakers and new arrivals, a compact mobile Gem AI panel and a fixed 2023 copyright display. Catalogue records remain API-only. Update the PRD, TRD, their Word sharing copies and relevant project documentation alongside future code or visual changes.
+
 ## Local development
 
 Open one terminal per application:

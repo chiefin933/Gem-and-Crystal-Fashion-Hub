@@ -170,6 +170,7 @@ export interface FilterState {
   minPrice: number;
   maxPrice: number;
   onSaleOnly: boolean;
+  newArrivalsOnly: boolean;
   inStockOnly: boolean;
   searchQuery: string;
   sortBy: 'featured' | 'newest' | 'price-low' | 'price-high' | 'bestselling';

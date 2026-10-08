@@ -13,12 +13,30 @@ The customer storefront uses an original fashion retail design: black brand fram
 - Fixed circular WhatsApp and Gem AI controls with accessible labels, safe-area spacing and modal-aware visibility.
 - Loading, unavailable, empty-results and retry states.
 - Modal keyboard focus, Escape dismissal and scroll restoration.
+- Four-slide top campaign for women's clothing, men's clothing, sneakers and new arrivals, with accessible navigation and pausable rotation.
+- New arrivals use catalogue isNew metadata; other catalogue entry points clear that restriction.
+- Compact inset Gem AI panel on phones, with internally scrolling messages and reachable close/send controls.
+- Fixed footer copyright year 2023, separate from the documentation revision date.
 
 ## Verification
 
-Build, lint and the existing six unit tests pass. Browser checks used disposable responses intercepted inside an isolated Chrome session; no catalogue records, real orders or payments were created. Checks covered mobile search, wishlist, variant selection, bag, checkout, pending payment recovery and server-confirmed order presentation. Responsive review covered desktop and 320/390px phone widths. The real API catalogue is not replaced with fixtures or demo products.
+Build, lint and nine unit tests pass, including API-only catalogue and new-arrival filtering checks. Browser checks use disposable responses intercepted inside an isolated Chrome session; no catalogue records, real orders or payments are created. Earlier checks covered mobile search, wishlist, variant selection, bag, checkout, pending payment recovery and server-confirmed order presentation. Responsive review covers desktop and 320/390px phone widths. The real API catalogue is not replaced with fixtures or demo products.
 
 Production deployment, genuine merchant payment acceptance, business-approved policies, address, hours and other missing contact details remain separate launch work.
+
+## Documentation maintenance
+
+The PRD and TRD Markdown documents, Word sharing copies, master specification and project documentation are updated with storefront changes. No update to this UI resolves or bypasses the pending POS M-Pesa callback/notification investigation.
+
+## October showcase and assistant behaviour
+
+The campaign rotates every 6.5 seconds, with previous/next, labelled slide tabs and pause/play controls. Rotation pauses for focus, hover, hidden documents and reduced-motion preferences. Actions reset incompatible filters; new arrivals restrict the catalogue to API isNew records and expose a clearable checkbox.
+
+The assistant panel is inset 12px, constrained to 380px width and at most 440px or 65dvh height. Visual viewport changes adjust its available height and keyboard inset. Messages scroll separately from the header and composer.
+
+The original sneaker campaign asset at src/assets/gem-crystal-sneakers-campaign.webp is promotional photography, not a product listing. Matching live catalogue images take precedence over fallback campaign assets. The fixed footer displays 2023.
+
+Final October review passed desktop, 320px/390px phones and short-landscape chat checks. All four slide assets rendered, catalogue actions and filter reset worked with isolated fixtures, autoplay advanced and reduced motion stopped rotation. Carousel controls cleared the fixed support dock; the next section remained visible. The compact chat retained reachable close/composer controls. Hidden-document timer handling was source-reviewed. Word copies were rendered and visually checked. The contained women's campaign image is intentionally small at 320px rather than cropped.
 
 ## Campaign asset
 

@@ -26,6 +26,7 @@ export const Header = ({
         sizes: [],
         colors: [],
         onSaleOnly: false,
+        newArrivalsOnly: false,
       }));
     setCurrentTab(tab);
     window.scrollTo(0, 0);
@@ -42,6 +43,7 @@ export const Header = ({
       minPrice: 0,
       maxPrice: 30000,
       onSaleOnly: false,
+      newArrivalsOnly: false,
       inStockOnly: false,
     }));
     setCurrentTab("shop");

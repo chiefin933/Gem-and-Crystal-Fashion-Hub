@@ -1,11 +1,19 @@
 # Gem & Crystal Fashion Hub — Master System Specification & Architectural Reference
 
-**Last Updated:** 2026-09-03  
+**Last Updated:** 2026-10-08
 **Database Engine:** PostgreSQL (`gem_crystal_db`) via Prisma ORM  
 **Database Connection:** Configured via `DATABASE_URL` environment variable in `.env` (managed via deployment secrets and excluded via `.gitignore`)  
 **Architecture Pattern:** Domain-Driven Modular Monolith with Event Bus
 
 ---
+
+## Storefront update October 2026
+
+The storefront now uses the original black/pink retail design, responsive merchandise grids, explicit variant selection, wishlist and accessible shopping dialogs. Products load only from the live API; demo fallback and unused fake authentication have been removed. Official categories and store configuration remain separate from product availability.
+
+The top campaign showcases women's clothing, men's clothing, sneakers and new arrivals through four navigable slides. Promotional photography does not guarantee inventory. The bold brand slogan remains visible on phones. Circular WhatsApp/Gem AI controls stay fixed at the bottom and hide while dialogs are open. The phone assistant is a compact inset conversation panel, not a fullscreen sheet. The footer displays the fixed copyright year 2023.
+
+Requirements and implementation contracts are maintained in docs/PRD.md and docs/TRD.md, with sharing copies in Word. Future changes must update these documents and the relevant verification notes before delivery. Production payment acceptance and the reported POS M-Pesa popup remain unverified; no frontend change marks an unverified payment paid.
 
 ## 1. Executive Summary & Brand Identity
 

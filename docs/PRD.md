@@ -2,8 +2,9 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.0 — pre-launch baseline  
-**Date:** 4 September 2026  
+**Version:** 1.1 — storefront experience update
+
+**Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
 
 ## 1. Product summary
@@ -112,3 +113,17 @@ Gem & Crystal Fashion Hub is one fashion-commerce system for the customer websit
 - Production database backup and migration plan.
 - Production secrets, CORS origins and owner credentials.
 - Staff training for POS login, pending payments and payment confirmation.
+
+## 11. Storefront experience update
+
+- Preserve the original black and pink boutique identity, with clear merchandise grids, responsive navigation and explicit size/colour selection.
+- The top campaign below navigation contains four slides: women's clothing, men's clothing, sneakers and new arrivals. Each offers a corresponding catalogue action, previous/next controls and a labelled slide selector.
+- Customers can pause automatic rotation. Rotation pauses during interaction and honours reduced-motion preferences.
+- Product records, prices and stock come only from the API. Campaign photography is promotional imagery, not evidence of a particular product's availability. An unavailable or empty catalogue must remain honest; no demo catalogue or fake customer/admin login is allowed.
+- The slogan "Be bold. Be bright. Be you." is prominently sized and bold on desktop and phones.
+- Circular WhatsApp and Gem AI controls stay fixed at the bottom with safe-area spacing. They hide while shopping or chat dialogs are open.
+- Gem AI opens in a compact inset panel on phones, with visible close and send controls and a separately scrolling conversation. It must not fill the whole phone screen.
+- The footer displays copyright year 2023 as requested by the owner; this is a fixed display value, not the documentation version date.
+- Every functional or visual change must update the PRD, TRD and relevant project documentation before delivery. Shared Word copies must reflect the same requirements.
+
+The POS M-Pesa popup investigation remains unresolved. Daraja simulation acceptance is not proof of callback delivery; verified callback, sale correlation and notification delivery still require end-to-end acceptance testing.

@@ -127,6 +127,9 @@ class DataService {
     if (filters.onSaleOnly) {
       result = result.filter((p) => p.onSale);
     }
+    if (filters.newArrivalsOnly) {
+      result = result.filter((product) => product.isNew);
+    }
 
     if (filters.inStockOnly) {
       result = result.filter(

@@ -105,6 +105,8 @@ Daraja registration must return ResponseCode `0` or `00000000`; HTTP 200 alone i
 
 ## 9. Security requirements
 
+- Keep `npm audit --omit=dev --audit-level=high` as a blocking CI check. The 8 October fix requires compression >=1.8.2 and locks Express's proxy-addr dependency to patched version 2.0.8. API checks failed on older versions before reaching tests; the patched local audit reports zero vulnerabilities.
+
 - Use HTTPS in production, especially for M-Pesa callback URL.
 - Put `MPESA_CONSUMER_KEY`, `MPESA_CONSUMER_SECRET`, `MPESA_PASSKEY` and `MPESA_CALLBACK_SECRET` in deployment secrets—not Git.
 - Use separate strong secrets for application JWT, POS sessions and M-Pesa callback validation.

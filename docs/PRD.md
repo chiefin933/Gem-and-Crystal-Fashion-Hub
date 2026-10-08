@@ -13,6 +13,8 @@ Gem & Crystal Fashion Hub is one fashion-commerce system for the customer websit
 
 **Core principle:** Products, stock, orders and payments have one source of truth. A customer screen, cashier action, or manually typed receipt cannot mark an order as paid.
 
+**Release requirement:** API checks must pass the production dependency audit without high or critical findings. The 8 October CI follow-up patches affected HTTP middleware dependencies; it does not change the customer or cashier payment flow.
+
 ## 2. Product areas
 
 | Area | Outcome | Primary application |

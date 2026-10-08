@@ -276,6 +276,14 @@ The status of system capabilities is tracked across four distinct audit stages:
 | `/api/pos/audit-logs` | `GET` | JWT Token | OWNER | List structured system audit logs |
 # Payment audit update - 8 October 2026
 
+## Admin product creation update - 8 October 2026
+
+The Store Category dropdown now follows the selected gender and the existing storefront taxonomy, including shared categories for all genders. Incompatible selections reset automatically. Product images use the existing owner-authenticated Cloudinary upload endpoint and folder `gem-and-crystal/products`; the admin accepts only successful responses with one hosted HTTPS Cloudinary URL per file. Publishing waits for upload completion and requires an uploaded image. Uploads support JPEG/PNG/WEBP, 4 files per batch, 5 MB per file and 12 images per product.
+
+PRD/TRD version 1.5 and the admin `docs/PRODUCT_CREATION.md` document this behaviour. All 10 admin unit tests and the production build passed. An isolated browser test covered the complete form flow with mocked API/Cloudinary responses, not a real hosted upload. The hosted API must have all three Cloudinary credentials configured; this change does not alter credentials or API source.
+
+## Payment verification
+
 Receipt presentation: the dedicated POS removes the internal `masked:` prefix from both the on-screen phone line and printable TEL line while retaining the obscured number. The stored payment identity is unchanged. The user has now confirmed an actual Daraja callback produced the cashier popup; final stock reconciliation has not been independently inspected.
 
 CI follow-up: GitHub API checks stopped at the dependency audit, before tests. The API now uses compression 1.8.2 and proxy-addr 2.0.8 to resolve the two reported advisories. The security gate is unchanged; the local production audit, build, unit tests and backup tests pass. This dependency correction does not prove live Daraja callback delivery.

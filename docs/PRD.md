@@ -2,7 +2,7 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.4 - payment diagnostics and cashier monitoring
+**Version:** 1.5 - product categories and Cloudinary uploads
 
 **Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
@@ -63,6 +63,13 @@ Gem & Crystal Fashion Hub is one fashion-commerce system for the customer websit
 - Block orders and sales when stock is insufficient.
 - Record every sale, return, failed-payment restoration and manual adjustment as an inventory movement.
 - Update stock atomically so simultaneous web/POS sales cannot oversell.
+
+### Admin product creation
+
+- Filter Store Category by the selected gender using the existing storefront taxonomy. Shared categories such as Sneakers and Hoodies remain available for women, men and unisex products.
+- Changing gender retains a compatible category or selects the first valid option. Never publish an incompatible gender/category selection from the form.
+- Upload product photos to Cloudinary before publishing; product records store confirmed hosted image URLs, not local paths or temporary browser previews.
+- Accept JPEG, PNG and WEBP files, at most 4 per upload and 5 MB per file, with at most 12 images per product. Explain upload failures and block publishing during an upload or without a successfully uploaded image.
 
 ### Admin and POS access
 

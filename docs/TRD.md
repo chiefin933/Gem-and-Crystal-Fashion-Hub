@@ -2,7 +2,7 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.4 - payment diagnostics and cashier monitoring
+**Version:** 1.5 - product categories and Cloudinary uploads
 
 **Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
@@ -154,3 +154,12 @@ Daraja registration must return ResponseCode `0` or `00000000`; HTTP 200 alone i
 - Footer year is the literal 2023. Do not derive it from the runtime clock.
 - Verify desktop, 320px and 390px phone widths, short viewports, all slide navigation/filter actions, rotation controls, assistant open/close/send layout, empty/unavailable catalogue and reduced-motion behaviour.
 - Update Markdown requirements, sharing copies and project documentation alongside code changes. Build/lint/unit and browser checks do not replace live merchant payment verification.
+
+## 13. Admin product categories and image storage
+
+- Admin `src/config/productCategories.ts` mirrors the storefront category names and gender assignments. `categoriesForGender` returns matching and shared categories. Gender changes reset incompatible selections; form submission validates the selected pair.
+- The owner-authenticated `POST /api/upload/images` receives multipart `images` files. The existing API validates image signatures and streams buffers to Cloudinary folder `gem-and-crystal/products`; credentials remain server-side in `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET`.
+- Admin validates 1-4 JPEG/PNG/WEBP files per upload and a 5 MB limit per file. The form limits a product to 12 images. API validation remains authoritative.
+- Accept an upload only when the API returns `success: true` and one HTTPS `res.cloudinary.com` URL per selected file. Product creation uses those returned URLs. There is no local-file or base64 fallback.
+- Disable publishing while uploading/submitting and when no images are stored in form state. Prevent closing the modal, removing images or starting another upload while work is pending. Surface backend configuration and upload errors.
+- Verification on 8 October 2026: admin build and all 10 unit tests passed. An isolated browser test verified gender changes, multipart upload, the pending-upload publish lock and the final product payload using mocked API/Cloudinary responses. Actual hosted Cloudinary storage was not exercised by this test.

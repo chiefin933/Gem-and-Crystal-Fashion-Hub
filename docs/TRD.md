@@ -101,6 +101,8 @@ The API must reject or hold for review any callback that does not meet all of th
 
 POS payment polling uses one request at a time, a 15-second abort timeout and a three-second retry delay after completion. HTTP errors, network errors and malformed notification responses produce a visible warning; HTTP 401 ends the shift. A successful poll clears the warning. Requests are aborted when the session changes to avoid stale-session alerts.
 
+The dedicated POS derives receipt phone display text by removing only the leading `masked:` prefix from `customerPhone`. Both the confirmation summary and printable receipt use this display value. Stored provider identities, masked digits and asterisks remain unchanged.
+
 Daraja registration must return ResponseCode `0` or `00000000`; HTTP 200 alone is insufficient. Registration errors must not create a successful-registration audit entry. Callback diagnostics log arrival and completion metadata without secrets or payloads. Diagnostic outcome `processed` means the handler completed, not necessarily that a sale was matched; verify the database audit and notification record.
 
 ## 9. Security requirements

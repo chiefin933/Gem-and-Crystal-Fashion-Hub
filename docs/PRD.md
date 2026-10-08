@@ -77,6 +77,7 @@ Gem & Crystal Fashion Hub is one fashion-commerce system for the customer websit
 - Keep reference-free, mismatched or expired payments for owner review. Do not infer a customer from the amount alone.
 - Create one durable notification for each confirmed POS payment and deliver it to the creating cashier, including after sign-in again.
 - Show the popup with payment reference, customer, amount and receipt. Complete the sale and deduct stock only after the cashier confirms.
+- Display masked payer numbers on the on-screen and printable POS receipt without the internal `masked:` prefix. Preserve the masked digits and asterisks.
 - Show a visible warning if payment checks fail or time out, and retry automatically. A device being online does not prove payment checks are working.
 - Confirm callback registration only after Daraja explicitly accepts it. Prefer owner registration from the admin so callback secrets are encoded correctly.
 

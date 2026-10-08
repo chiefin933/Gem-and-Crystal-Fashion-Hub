@@ -274,3 +274,6 @@ The status of system capabilities is tracked across four distinct audit stages:
 | `/api/orders` | `GET` | JWT Token | OWNER | List customer e-commerce orders |
 | `/api/pos/sales` | `GET` | JWT Token | OWNER | List in-store boutique sales log |
 | `/api/pos/audit-logs` | `GET` | JWT Token | OWNER | List structured system audit logs |
+# Payment audit update - 8 October 2026
+
+POS notification checks now show HTTP/network/response failures, time out stalled requests and retry sequentially. Daraja callback registration requires an explicit successful ResponseCode. PRD/TRD version 1.4 documents the active C2B Till workflow, cashier-scoped notification delivery and owner review for missing or mismatched references. API unit tests/build, all 16 isolated database integration tests and POS 10 tests/build passed. Live delivery for GCPOSECE8C8 / GCPOSA5E9A6 remains unverified. See the API repository's `docs/PAYMENT_REGRESSION_AUDIT_2026_10_08.md` for evidence and the September 22 matching change.

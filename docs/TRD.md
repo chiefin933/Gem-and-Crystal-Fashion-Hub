@@ -2,7 +2,7 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.3 — recorded phone experience correction
+**Version:** 1.4 - payment diagnostics and cashier monitoring
 
 **Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
@@ -64,10 +64,14 @@ The platform consists of three React applications and one Express API backed by 
 
 | Endpoint | Access | Purpose |
 | --- | --- | --- |
-| `POST /api/orders` | Public, rate limited | Creates online order and starts M-Pesa when configured. |
-| `POST /api/pos/checkout` | Approved POS session | Creates in-store sale and starts M-Pesa when selected. |
-| `POST /api/orders/mpesa-callback` | Callback secret + strict validation | Confirms or fails an M-Pesa result. |
-| `GET /api/pos/payment-notifications` | Approved POS session | Delivers and acknowledges verified payment popups. |
+| `POST /api/orders` | Public, rate limited | Creates a pending checkout session for customer Till payment. |
+| `POST /api/pos/checkout` | Approved POS session | Creates a pending M-Pesa sale, or completes a cash sale. |
+| `POST /api/orders/mpesa-c2b-register` | Owner | Registers encoded confirmation and validation URLs; requires an explicit successful provider response code. |
+| `POST /api/orders/c2b-callback` | C2B secret + strict validation | Records a verified C2B payment or queues it for owner review. |
+| `POST /api/orders/c2b-callback/validation` | C2B secret + strict validation | Validates callback format and merchant without settling payment. |
+| `POST /api/orders/mpesa-callback` | STK secret + strict validation | Legacy STK callback; separate from the Till flow. |
+| `GET /api/pos/payment-notifications` | Approved POS session | Reads unacknowledged alerts belonging to the cashier; does not acknowledge them. |
+| `POST /api/pos/payment-notifications/:id/acknowledge` | Same cashier | Acknowledges a notification only after sale completion. |
 | `GET /api/orders/:orderNumber` | Order tracking token | Returns only the customer’s own order data. |
 | `/api/products`, `/api/coupons`, `/api/settings` | Public read / owner write | Product, promotion and store configuration. |
 | `/api/admin` and owner routes | Owner token | Administration, inventory and reporting. |
@@ -79,20 +83,25 @@ The API must reject or hold for review any callback that does not meet all of th
 - M-Pesa integration is configured.
 - Callback secret matches using constant-time comparison.
 - Payload has the expected shape.
-- Checkout and merchant request IDs match a request created by this API.
-- Successful callback includes a valid receipt.
-- Amount and normalized payer phone match the pending record.
-- Receipt and request IDs have unique database constraints.
+- C2B BusinessShortCode matches deployment configuration; STK callbacks separately match checkout and merchant request IDs.
+- Successful callback includes a valid receipt that has not paid another transaction.
+- C2B BillRefNumber (or AccountReference) matches the checkout or sale reference and the amount matches exactly in cents.
+- The target remains open and within its payment window; otherwise retain the payment for owner review.
+- Masked or hashed C2B payer identities are accepted as opaque identifiers, not used as phone-based payment matching.
 
 ## 8. Failure and recovery
 
 | Situation | Required behaviour |
 | --- | --- |
 | Customer cancels/payment fails | Mark payment `FAILED`; restore stock once; audit the result. |
-| Amount, phone or ID mismatch | Keep pending; write review log; show no POS popup. |
+| C2B missing reference, wrong amount or expired target | Store verified payment in Unmatched Payments; show no paid popup until reviewed and assigned. |
 | POS temporarily offline | Keep notification until it is acknowledged after reconnect. |
 | Daraja unavailable | Keep transaction pending; never claim it was paid. |
 | Duplicate callback | Return safe idempotent response; no duplicate stock movement or alert. |
+
+POS payment polling uses one request at a time, a 15-second abort timeout and a three-second retry delay after completion. HTTP errors, network errors and malformed notification responses produce a visible warning; HTTP 401 ends the shift. A successful poll clears the warning. Requests are aborted when the session changes to avoid stale-session alerts.
+
+Daraja registration must return ResponseCode `0` or `00000000`; HTTP 200 alone is insufficient. Registration errors must not create a successful-registration audit entry. Callback diagnostics log arrival and completion metadata without secrets or payloads. Diagnostic outcome `processed` means the handler completed, not necessarily that a sale was matched; verify the database audit and notification record.
 
 ## 9. Security requirements
 

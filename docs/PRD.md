@@ -2,7 +2,7 @@
 
 ## Gem & Crystal Fashion Hub Platform
 
-**Version:** 1.3 — recorded phone experience correction
+**Version:** 1.4 - payment diagnostics and cashier monitoring
 
 **Date:** 8 October 2026
 **Scope:** Storefront, API, admin dashboard, POS, inventory and payments
@@ -70,13 +70,13 @@ Gem & Crystal Fashion Hub is one fashion-commerce system for the customer websit
 
 ### M-Pesa payments
 
-- Collect a valid M-Pesa phone number for M-Pesa orders and POS sales.
-- Create a pending order/sale before requesting payment.
-- Send STK payment requests only from the API after it calculates the true total.
-- Verify provider callback request IDs, amount, payer phone, result code and receipt.
-- Create one durable notification for each confirmed payment.
-- Show the active POS a popup with payment reference, customer, amount and receipt.
-- On cancellation/failure, mark the transaction failed and restore reserved stock exactly once.
+- Create a pending POS sale or website checkout session with a server-calculated total before the customer pays the Till.
+- Verify the C2B callback secret, business shortcode, payload and receipt. Match an exact checkout reference and amount within its payment window.
+- Keep reference-free, mismatched or expired payments for owner review. Do not infer a customer from the amount alone.
+- Create one durable notification for each confirmed POS payment and deliver it to the creating cashier, including after sign-in again.
+- Show the popup with payment reference, customer, amount and receipt. Complete the sale and deduct stock only after the cashier confirms.
+- Show a visible warning if payment checks fail or time out, and retry automatically. A device being online does not prove payment checks are working.
+- Confirm callback registration only after Daraja explicitly accepts it. Prefer owner registration from the admin so callback secrets are encoded correctly.
 
 ## 7. Acceptance criteria
 
